@@ -27,20 +27,11 @@ class AudioManager:
         pygame.mixer.music.set_volume(self.music_volume)
         pygame.mixer.music.play(-1)
 
-    def load_lose_sound(self):
-        pygame.mixer.Channel(1).play(pygame.mixer.Sound(join_path(AUDIO_PATHS["lose"])))
-
-    def load_coin_sound(self):
-        pygame.mixer.Channel(1).play(pygame.mixer.Sound(join_path(AUDIO_PATHS["coin"])))
+    def load_sound(self, sound_name):
+        pygame.mixer.Channel(1).play(pygame.mixer.Sound(join_path(AUDIO_PATHS[sound_name])))
 
     def load_win_sound(self):
         pygame.mixer.Channel(1).play(pygame.mixer.Sound(join_path(AUDIO_PATHS["win"])))
-
-    def load_notification_sound(self):
-        pygame.mixer.Channel(1).play(pygame.mixer.Sound(join_path(AUDIO_PATHS["notification"])))
-
-    def load_achievement_sound(self):
-        pygame.mixer.Channel(1).play(pygame.mixer.Sound(join_path(AUDIO_PATHS["achievement"])))
 
     def to_pause(self):
         self.pause = not self.pause

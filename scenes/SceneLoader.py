@@ -25,12 +25,12 @@ class SceneLoader:
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        self.audio_manager.load_notification_sound()
+                        self.audio_manager.load_sound("notification")
                         mes_event = self.messanger.show_message(
                             "Для выхода в главное меню нажмите Enter", screen)
                         if mes_event.type == pygame.KEYDOWN:
                             if mes_event.key == 13:  # enter
-                                self.audio_manager.load_lose_sound()
+                                self.audio_manager.load_sound("lose")
                                 running = False
                 self.audio_manager.process_event(event)
                 scene.process_event(event)

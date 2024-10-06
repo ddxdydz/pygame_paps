@@ -2,9 +2,9 @@ import random
 
 
 # Use these characters for displaying the maze:
-EMPTY = '.'
+EMPTY = 0  # '.'
 MARK = '+'
-WALL = '*'
+WALL = 1  # '*'
 NORTH, SOUTH, EAST, WEST = 'n', 's', 'e', 'w'
 
 

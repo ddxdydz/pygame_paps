@@ -1,4 +1,5 @@
 ONE_TICK_TO_PX = 100
+ONE_GGUI_TICK_TO_PX = 100
 EMPTY_CODE = '00'
 CODES_TABLE = {
     "fb0": "floor_basic",
@@ -13,6 +14,7 @@ CODES_TABLE = {
     "ws3": "wall_stone3",
     "wdw": "window",
     "hr": "hero",
+    "sc": "sceleton",
     "ky": "key",
     "ch": "chess",
     "vs": "vase",
@@ -33,6 +35,7 @@ OBJECTS_SETTINGS = {
     "hero": {
         "code": "pl", "size": (1, 1),
         "imgs": {
+            "base": ["data", "imgs", "game_imgs", "hero", "attack", "1.png"],
             "attack1": ["data", "imgs", "game_imgs", "hero", "attack", "1.png"],
             "attack2": ["data", "imgs", "game_imgs", "hero", "attack", "2.png"],
             "attack3": ["data", "imgs", "game_imgs", "hero", "attack", "3.png"],
@@ -58,12 +61,15 @@ OBJECTS_SETTINGS = {
             "walk5": ["data", "imgs", "game_imgs", "hero", "walk", "5.png"],
             "walk6": ["data", "imgs", "game_imgs", "hero", "walk", "6.png"],
             "walk7": ["data", "imgs", "game_imgs", "hero", "walk", "7.png"],
-            "walk8": ["data", "imgs", "game_imgs", "hero", "walk", "8.png"]
+            "walk8": ["data", "imgs", "game_imgs", "hero", "walk", "8.png"],
+            "hit1": ["data", "imgs", "game_imgs", "hero", "hit", "1.png"],
+            "hit2": ["data", "imgs", "game_imgs", "hero", "hit", "2.png"],
         }
     },
     "key": {
         "code": "ky", "size": (0.7, 0.7),
         "imgs": {
+            "base": ["data", "imgs", "game_imgs", "map_objects", "key", "key1.png"],
             "1": ["data", "imgs", "game_imgs", "map_objects", "key", "key1.png"],
             "2": ["data", "imgs", "game_imgs", "map_objects", "key", "key2.png"],
             "3": ["data", "imgs", "game_imgs", "map_objects", "key", "key3.png"]
@@ -72,6 +78,7 @@ OBJECTS_SETTINGS = {
     "chess": {
         "code": "ch", "size": (0.7, 0.7),
         "imgs": {
+            "base": ["data", "imgs", "game_imgs", "map_objects", "chess", "chess1.png"],
             "1": ["data", "imgs", "game_imgs", "map_objects", "chess", "chess1.png"],
             "2": ["data", "imgs", "game_imgs", "map_objects", "chess", "chess2.png"],
             "3": ["data", "imgs", "game_imgs", "map_objects", "chess", "chess3.png"],
@@ -81,6 +88,7 @@ OBJECTS_SETTINGS = {
     "vase": {
         "code": "vs", "size": (0.7, 0.7),
         "imgs": {
+            "base": ["data", "imgs", "game_imgs", "map_objects", "vase", "vase1.png"],
             "1": ["data", "imgs", "game_imgs", "map_objects", "vase", "vase1.png"],
             "2": ["data", "imgs", "game_imgs", "map_objects", "vase", "vase2.png"],
             "3": ["data", "imgs", "game_imgs", "map_objects", "vase", "vase3.png"],
@@ -90,10 +98,89 @@ OBJECTS_SETTINGS = {
     "money": {
         "code": "mn", "size": (0.7, 0.7),
         "imgs": {
+            "base": ["data", "imgs", "game_imgs", "map_objects", "money", "money1.png"],
             "1": ["data", "imgs", "game_imgs", "map_objects", "money", "money1.png"],
             "2": ["data", "imgs", "game_imgs", "map_objects", "money", "money2.png"],
             "3": ["data", "imgs", "game_imgs", "map_objects", "money", "money3.png"],
             "4": ["data", "imgs", "game_imgs", "map_objects", "money", "money4.png"],
         }
+    },
+    "sceleton": {
+        "code": "sc", "size": (0.7, 0.7),
+        "imgs": {
+            "attack1": ["data", "imgs", "game_imgs", "skeleton", "attack", "1.png"],
+            "attack2": ["data", "imgs", "game_imgs", "skeleton", "attack", "2.png"],
+            "attack3": ["data", "imgs", "game_imgs", "skeleton", "attack", "3.png"],
+            "attack4": ["data", "imgs", "game_imgs", "skeleton", "attack", "4.png"],
+            "attack5": ["data", "imgs", "game_imgs", "skeleton", "attack", "5.png"],
+            "attack6": ["data", "imgs", "game_imgs", "skeleton", "attack", "6.png"],
+            "attack7": ["data", "imgs", "game_imgs", "skeleton", "attack", "7.png"],
+            "attack8": ["data", "imgs", "game_imgs", "skeleton", "attack", "8.png"],
+            "attack9": ["data", "imgs", "game_imgs", "skeleton", "attack", "9.png"],
+            "attack10": ["data", "imgs", "game_imgs", "skeleton", "attack", "10.png"],
+            "attack11": ["data", "imgs", "game_imgs", "skeleton", "attack", "11.png"],
+            "attack12": ["data", "imgs", "game_imgs", "skeleton", "attack", "12.png"],
+            "attack13": ["data", "imgs", "game_imgs", "skeleton", "attack", "13.png"],
+            "attack14": ["data", "imgs", "game_imgs", "skeleton", "attack", "14.png"],
+            "attack15": ["data", "imgs", "game_imgs", "skeleton", "attack", "15.png"],
+            "attack16": ["data", "imgs", "game_imgs", "skeleton", "attack", "16.png"],
+            "attack17": ["data", "imgs", "game_imgs", "skeleton", "attack", "17.png"],
+            "attack18": ["data", "imgs", "game_imgs", "skeleton", "attack", "18.png"],
+            "dead1": ["data", "imgs", "game_imgs", "skeleton",  "dead", "1.png"],
+            "dead2": ["data", "imgs", "game_imgs", "skeleton",  "dead", "2.png"],
+            "dead3": ["data", "imgs", "game_imgs", "skeleton",  "dead", "3.png"],
+            "dead4": ["data", "imgs", "game_imgs", "skeleton",  "dead", "4.png"],
+            "dead5": ["data", "imgs", "game_imgs", "skeleton",  "dead", "5.png"],
+            "dead6": ["data", "imgs", "game_imgs", "skeleton",  "dead", "6.png"],
+            "dead7": ["data", "imgs", "game_imgs", "skeleton",  "dead", "7.png"],
+            "dead8": ["data", "imgs", "game_imgs", "skeleton",  "dead", "8.png"],
+            "dead9": ["data", "imgs", "game_imgs", "skeleton",  "dead", "9.png"],
+            "dead10": ["data", "imgs", "game_imgs", "skeleton", "dead", "10.png"],
+            "dead11": ["data", "imgs", "game_imgs", "skeleton", "dead", "11.png"],
+            "dead12": ["data", "imgs", "game_imgs", "skeleton", "dead", "12.png"],
+            "dead13": ["data", "imgs", "game_imgs", "skeleton", "dead", "13.png"],
+            "dead14": ["data", "imgs", "game_imgs", "skeleton", "dead", "14.png"],
+            "dead15": ["data", "imgs", "game_imgs", "skeleton", "dead", "15.png"],
+            "hit1": ["data", "imgs", "game_imgs", "skeleton",  "hit", "1.png"],
+            "hit2": ["data", "imgs", "game_imgs", "skeleton",  "hit", "2.png"],
+            "hit3": ["data", "imgs", "game_imgs", "skeleton",  "hit", "3.png"],
+            "hit4": ["data", "imgs", "game_imgs", "skeleton",  "hit", "4.png"],
+            "hit5": ["data", "imgs", "game_imgs", "skeleton",  "hit", "5.png"],
+            "hit6": ["data", "imgs", "game_imgs", "skeleton",  "hit", "6.png"],
+            "hit7": ["data", "imgs", "game_imgs", "skeleton",  "hit", "7.png"],
+            "hit8": ["data", "imgs", "game_imgs", "skeleton",  "hit", "8.png"],
+            "idle1": ["data", "imgs", "game_imgs", "skeleton",  "idle", "1.png"],
+            "idle2": ["data", "imgs", "game_imgs", "skeleton",  "idle", "2.png"],
+            "idle3": ["data", "imgs", "game_imgs", "skeleton",  "idle", "3.png"],
+            "idle4": ["data", "imgs", "game_imgs", "skeleton",  "idle", "4.png"],
+            "idle5": ["data", "imgs", "game_imgs", "skeleton",  "idle", "5.png"],
+            "idle6": ["data", "imgs", "game_imgs", "skeleton",  "idle", "6.png"],
+            "idle7": ["data", "imgs", "game_imgs", "skeleton",  "idle", "7.png"],
+            "idle8": ["data", "imgs", "game_imgs", "skeleton",  "idle", "8.png"],
+            "idle9": ["data", "imgs", "game_imgs", "skeleton",  "idle", "9.png"],
+            "idle10": ["data", "imgs", "game_imgs", "skeleton", "idle", "10.png"],
+            "idle11": ["data", "imgs", "game_imgs", "skeleton", "idle", "11.png"],
+            "react1": ["data", "imgs", "game_imgs", "skeleton",  "react", "1.png"],
+            "react2": ["data", "imgs", "game_imgs", "skeleton",  "react", "2.png"],
+            "react3": ["data", "imgs", "game_imgs", "skeleton",  "react", "3.png"],
+            "react4": ["data", "imgs", "game_imgs", "skeleton",  "react", "4.png"],
+            "walk1": ["data", "imgs", "game_imgs", "skeleton",  "walk", "1.png"],
+            "walk2": ["data", "imgs", "game_imgs", "skeleton",  "walk", "2.png"],
+            "walk3": ["data", "imgs", "game_imgs", "skeleton",  "walk", "3.png"],
+            "walk4": ["data", "imgs", "game_imgs", "skeleton",  "walk", "4.png"],
+            "walk5": ["data", "imgs", "game_imgs", "skeleton",  "walk", "5.png"],
+            "walk6": ["data", "imgs", "game_imgs", "skeleton",  "walk", "6.png"],
+            "walk7": ["data", "imgs", "game_imgs", "skeleton",  "walk", "7.png"],
+            "walk8": ["data", "imgs", "game_imgs", "skeleton",  "walk", "8.png"],
+            "walk9": ["data", "imgs", "game_imgs", "skeleton",  "walk", "9.png"],
+            "walk10": ["data", "imgs", "game_imgs", "skeleton", "walk", "10.png"],
+            "walk11": ["data", "imgs", "game_imgs", "skeleton", "walk", "11.png"],
+            "walk12": ["data", "imgs", "game_imgs", "skeleton", "walk", "12.png"],
+            "walk13": ["data", "imgs", "game_imgs", "skeleton", "walk", "13.png"],
+        }
     }
+}
+GAME_GUI_IMAGES = {
+    "health_bar": {"size": (2.25, 0.5), "path": ["data", "imgs", "game_imgs", "other", "health_bar.png"]},
+    "stamina_bar": {"size": (2.25, 0.5), "path": ["data", "imgs", "game_imgs", "other", "stamina_bar.png"]}
 }

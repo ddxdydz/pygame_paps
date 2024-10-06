@@ -21,7 +21,12 @@ AUDIO_PATHS = {
     "coin": ["data", "audio", "sound", "coin.wav"],
     "win": ["data", "audio", "sound", "win.wav"],
     "notification": ["data", "audio", "sound", "notification.wav"],
-    "achievement": ["data", "audio", "sound", "achievement.wav"]
+    "achievement": ["data", "audio", "sound", "achievement.wav"],
+    "death": ["data", "audio", "sound", "death_sound.wav"],
+    "sceleton_lose": ["data", "audio", "sound", "sceleton_lose.wav"],
+    "sceleton_hit": ["data", "audio", "sound", "sceleton_hit.wav"],
+    "hero_hit": ["data", "audio", "sound", "hero_hit.wav"],
+    "sceleton_alert": ["data", "audio", "sound", "sceleton_alert.wav"]
 }
 IMAGE_PATHS = {
     "icon": ["data", "imgs", "icon", "icon.png"],

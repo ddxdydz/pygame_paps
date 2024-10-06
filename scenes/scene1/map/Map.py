@@ -1,3 +1,5 @@
+from math import trunc
+
 from basic.game_logic.GameCollidingObject import GameCollidingObject
 from basic.game_logic.visualization.GamingDisplayManager import GamingDisplayManager
 from scenes.scene1.game_objects.Wall import Wall
@@ -12,6 +14,12 @@ class Map:
     def set_scheme(self, scheme):
         self.scheme = scheme
 
+    @staticmethod
+    def get_scheme_coordinates(centre_coordinates):
+        x, y = centre_coordinates
+        col, row = trunc(x), trunc(y) + 1
+        return row, col
+
     def fill_collision_cells_map(self, collision_scheme):
         self.collision_scheme = collision_scheme
         for row in range(len(collision_scheme)):
@@ -24,7 +32,7 @@ class Map:
 
     def get_near_walls(self, coordinates: tuple[int, int], delta_side=2):
         result = []
-        x, y = round(coordinates[0]), round(coordinates[1])
+        y, x = Map.get_scheme_coordinates(coordinates)
         height, width = len(self.collision_scheme), len(self.collision_scheme[0])
 
         for col in range(y - delta_side, y + delta_side + 1):

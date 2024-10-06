@@ -3,6 +3,7 @@ from basic.game_logic.game_constants import EMPTY_CODE, CODES_TABLE, OBJECTS_SET
 from scenes.scene1.game_objects.Chess import Chess
 from scenes.scene1.game_objects.Key import Key
 from scenes.scene1.game_objects.Money import Money
+from scenes.scene1.game_objects.Sceleton import Sceleton
 from scenes.scene1.game_objects.Vase import Vase
 from scenes.scene1.game_objects.Player import Player
 
@@ -33,6 +34,10 @@ def get_objects(scheme) -> [GameObject, ...]:
                     width, height = OBJECTS_SETTINGS[CODES_TABLE[code]]["size"]
                     player = Player((col, row), size=(width, height))
                     game_objects.append(player)
+                elif code == Sceleton.CODE:
+                    width, height = OBJECTS_SETTINGS[CODES_TABLE[code]]["size"]
+                    dx, dy = (1 - width) / 2, (1 - height) / 2
+                    game_objects.append(Sceleton((col + dx, row - dy), size=(width, height)))
     return game_objects
 
 
@@ -40,6 +45,13 @@ def get_player_index(game_objects: [GameObject, ...]):
     for obj_index in range(len(game_objects)):
         obj = game_objects[obj_index]
         if isinstance(obj, Player):
+            return obj_index
+
+
+def get_enemy_index(game_objects: [GameObject, ...]):
+    for obj_index in range(len(game_objects)):
+        obj = game_objects[obj_index]
+        if isinstance(obj, Sceleton):
             return obj_index
 
 

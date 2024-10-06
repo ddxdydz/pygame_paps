@@ -7,7 +7,7 @@ from basic.game_logic.layers_generator.maze.MazeGenerator import MazeGenerator, 
 class LayersGenerator:
     floor_codes = ["fw1", "fw2", "fw3"]
     wall_codes = ["ws1", "ws2", "ws3"]
-    objects_on_map = ["hr", "ch", "mn", "mn", "mn", "ky", "vs", "vs"]
+    objects_on_map = ["hr", "ch", "mn", "mn", "mn", "ky", "vs", "vs", "sc"]
 
     def __init__(self, width=15, height=15, seed=None):
         self.width, self.height = width, height

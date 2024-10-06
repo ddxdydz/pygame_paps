@@ -24,6 +24,10 @@ class GamingDisplayManager:
     def update_screen(self, screen):
         self.screen = screen
 
+    @staticmethod
+    def get_img(obj_code, img_type):
+        return GamingDisplayManager.objects_images_library[obj_code][img_type]
+
     def get_camera_size_in_ticks(self):
         camera_size_in_px = camera_width_in_px, camera_height_in_px = WINDOW_SIZE
         return camera_width_in_px // ONE_TICK_TO_PX, camera_height_in_px // ONE_TICK_TO_PX
