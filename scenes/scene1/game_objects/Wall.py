@@ -1,12 +1,8 @@
-from basic.game_logic.GameCollidingObject import GameCollidingObject
+from basic.general_game_logic.base_objects.GameCollidingObject import GameCollidingObject
 
 
 class Wall(GameCollidingObject):
-    CODE = "ws1"
-
-    def __init__(self, coordinates):
+    def __init__(self, coordinates, size=(1, 1)):
         super().__init__(coordinates)
-        self.set_collision_rect(0, 0, 1, 1)
+        self.create_collision_rect(0, 0, *size)
 
-    def get_code(self):
-        return Wall.CODE

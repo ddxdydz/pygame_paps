@@ -2,18 +2,21 @@ import sys
 import pygame
 import pygame_gui
 
-from basic.local_constants import WINDOW_SIZE, FPS
-from basic.local_constants import IMAGE_PATHS
-from basic.loading_files import load_image
-from basic.MenuGUI import MenuGUI
-from scenes.SceneLoader import SceneLoader
-from basic.AudioManager import AudioManager
+from basic.general_settings import WINDOW_SIZE, FPS
+from basic.general_settings import IMAGE_PATHS, AUDIO_PATHS
+from basic.tools.loading_files import load_image
+from basic.general_gui.MenuGUI import MenuGUI
+from basic.general_game_logic.scene_folder.SceneLoader import SceneLoader
+from basic.audio.AudioManager import AudioManager
+from scenes.scene1.Scene1 import Scene1
+from scenes.scene2.Scene2 import Scene2
 
 
 def main():
     menu_gui = MenuGUI()
-    audio_manager = AudioManager()
-    audio_manager.load_menu_music()
+    audio_manager = AudioManager(False)
+    audio_manager.load_audio_data(AUDIO_PATHS)
+    audio_manager.load_music("menu")
     scene_loader = SceneLoader(audio_manager)
 
     clock = pygame.time.Clock()
@@ -26,9 +29,9 @@ def main():
                 sys.exit()
             elif event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == menu_gui.start_button:
-                    audio_manager.load_game_music()
-                    scene_loader.load(screen)
-                    audio_manager.load_menu_music()
+                    audio_manager.load_music("game")
+                    scene_loader.load(Scene2(screen, audio_manager))
+                    audio_manager.load_music("menu")
                 elif event.ui_element == menu_gui.rules_button:
                     menu_gui.show_rules(screen)
                 elif event.ui_element == menu_gui.quit_button:

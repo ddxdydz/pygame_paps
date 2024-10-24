@@ -1,13 +1,12 @@
 import pygame
 
-from basic.game_logic.collisions.damage_system.DamageArea import DamageArea
-from basic.local_constants import FPS
-from basic.game_logic.GameDynamicObject import GameDynamicObject
-from basic.game_logic.visualization.GamingDisplayManager import GamingDisplayManager
+from basic.general_settings import FPS
+from basic.general_game_logic.dynamic.damage_system.DamageArea import DamageArea
+from basic.general_game_logic.base_objects.GameDynamicObject import GameDynamicObject
+from basic.general_game_logic.visualization.GamingDisplayManager import GamingDisplayManager
 
 
 class Player(GameDynamicObject):
-    CODE = "hr"
     ATTACK, STAY, DEAD, DEATH, WALK, RUN, HIT = "attack", "stay", "dead", "death", "walk", "run", "hit"
     frames = {
         ATTACK: ["attack1", "attack2", "attack3", "attack4", "attack5", "attack4", "attack3", "attack2"],
@@ -31,28 +30,30 @@ class Player(GameDynamicObject):
 
     def __init__(self, coordinates, size=(0, 0)):
         super().__init__(coordinates, size)
-        self.set_collision_rect(0.35, -0.3, 0.3, 0.6)
+        self.create_collision_rect(0.35, -0.3, 0.3, 0.6)
         self.audio_manager = None
+        self.gaming_gui_manager = None
         self.current_stage = Player.STAY
         self.enable_updating = True
 
         # Characteristics
         self.move_step = 0.02
         self.run_step = 0.05
-        self.max_health = 100
-        self.current_health = 100
-        self.infinity_health = False
         self.max_stamina = 100
         self.current_stamina = 100
         self.decrease_stamina_speed = 20  # per second
         self.increase_stamina_speed = 10  # per second
         self.min_running_stamina_level = 20
         self.infinity_stamina = False
+
         self.attack_delay = 0.9  # sec
         self.current_attack_delay = 0
 
-        self.damage_area = DamageArea((0, 0), rect=(0.1, -0.3, 0.8, 0.6), damage=20)
-        self.request_damage_processing = False
+        self.damage_area = DamageArea((0, 0), rect=(0.1, -0.3, 0.8, 0.6))
+        self.damage = 20
+        self.max_health = 100
+        self.current_health = 100
+        self.infinity_health = False
 
         # Animated
         self.vertical_reverse = False
@@ -67,15 +68,20 @@ class Player(GameDynamicObject):
         if self.audio_manager is not None:
             self.audio_manager.load_sound(sound_name)
 
-    def get_code(self):
-        return Player.CODE
+    def set_gaming_gui_manager(self, gaming_gui_manager):
+        self.gaming_gui_manager = gaming_gui_manager
+
+    def show_message_safety(self, message):
+        if self.gaming_gui_manager is not None:
+            self.gaming_gui_manager.show_message(message)
 
     def update_frame(self):
         self.current_time -= 1 / FPS
         if self.current_time < 0:
             self.current_time = 1 / Player.frames_per_second[self.current_stage]  # sec
             self.current_frame_index += 1
-            if self.stage_updating_delay > 0: self.stage_updating_delay -= 1
+            if self.stage_updating_delay > 0:
+                self.stage_updating_delay -= 1
         self.current_frame_index %= len(Player.frames[self.current_stage])
 
     def update_stamina(self):
@@ -92,17 +98,17 @@ class Player(GameDynamicObject):
                 self.current_stamina > self.min_running_stamina_level or self.infinity_stamina
         ):
             if keys[pygame.K_w]:
-                self.add_processing_move(0, self.run_step)
+                self.move(0, self.run_step)
                 is_running = True
             if keys[pygame.K_s]:
-                self.add_processing_move(0, -self.run_step)
+                self.move(0, -self.run_step)
                 is_running = True
             if keys[pygame.K_a]:
-                self.add_processing_move(-self.run_step, 0)
+                self.move(-self.run_step, 0)
                 is_running = True
                 self.vertical_reverse = True
             if keys[pygame.K_d]:
-                self.add_processing_move(self.run_step, 0)
+                self.move(self.run_step, 0)
                 is_running = True
                 self.vertical_reverse = False
         return is_running
@@ -111,17 +117,17 @@ class Player(GameDynamicObject):
         keys = pygame.key.get_pressed()
         is_walking = False
         if keys[pygame.K_w]:
-            self.add_processing_move(0, self.move_step)
+            self.move(0, self.move_step)
             is_walking = True
         if keys[pygame.K_s]:
-            self.add_processing_move(0, -self.move_step)
+            self.move(0, -self.move_step)
             is_walking = True
         if keys[pygame.K_a]:
-            self.add_processing_move(-self.move_step, 0)
+            self.move(-self.move_step, 0)
             is_walking = True
             self.vertical_reverse = True
         if keys[pygame.K_d]:
-            self.add_processing_move(self.move_step, 0)
+            self.move(self.move_step, 0)
             is_walking = True
             self.vertical_reverse = False
         return is_walking
@@ -135,10 +141,14 @@ class Player(GameDynamicObject):
         return is_attacking
 
     def process_getting_damage(self, damage):
-        self.current_health -= damage
+        self.decrease_health(damage)
         if self.current_stage != Player.DEAD:
             self.current_stage = Player.HIT
             self.set_stage_updating_delay()
+            self.gaming_gui_manager.show_message(
+                f"- Вы получили дамаг: {damage}. Текущее количество hp: {self.current_health}"
+            )
+            self.audio_manager.load_sound("hero_hit")
 
     def check_death(self):
         if self.current_health <= 0 and not self.infinity_health:
@@ -181,8 +191,7 @@ class Player(GameDynamicObject):
                 self.current_stage = Player.DEATH
             elif self.current_stage == Player.ATTACK:
                 self.current_stage = Player.STAY
-                self.damage_area.set_coordinates(self.get_coordinates())
-                self.request_damage_processing = True
+                self.do_damage()
             elif self.current_stage == Player.HIT:
                 self.current_stage = Player.STAY
             elif new_stage is not None:
@@ -199,8 +208,8 @@ class Player(GameDynamicObject):
         self.update_frame()
 
     def draw(self, display_manager: GamingDisplayManager):
-        display_manager.draw(
-            Player.CODE, Player.frames[self.current_stage][self.current_frame_index],
+        display_manager.draw_image(
+            "hero", Player.frames[self.current_stage][self.current_frame_index],
             self.get_coordinates(),
             self.vertical_reverse
         )

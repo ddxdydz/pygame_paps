@@ -1,47 +1,60 @@
-from math import trunc
-
-from basic.game_logic.GameCollidingObject import GameCollidingObject
-from basic.game_logic.visualization.GamingDisplayManager import GamingDisplayManager
+from basic.general_game_logic.base_objects.GameCollidingObject import GameCollidingObject
+from basic.general_game_logic.visualization.GamingDisplayManager import GamingDisplayManager
 from scenes.scene1.game_objects.Wall import Wall
+from scenes.scene1.general.loading_objects.loading_objects import get_objects
+from scenes.scene1.map.layers_generator.maze.MazeLayersGenerator import MazeLayersGenerator
+from scenes.scene1.map.layers_generator.get_scheme_coordinates import get_scheme_coordinates
 
 
 class Map:
-    def __init__(self, scheme):
-        self.scheme = scheme
-        self.collision_scheme = []
-        self.collision_cells_map = []
+    def __init__(self):
+        maze_layers_generator = MazeLayersGenerator(width=15, height=15)
+        maze_layers_generator.set_floor_codes(["floor_wooden1", "floor_wooden2", "floor_wooden3"])
+        maze_layers_generator.set_wall_codes(["wall_stone1", "wall_stone2", "wall_stone3"])
+        maze_layers_generator.set_objects_codes(
+            ["hero", "chess", "money", "money", "money", "key", "vase", "vase", "sceleton"])
+        map_layers = maze_layers_generator.get_layers()
 
-    def set_scheme(self, scheme):
-        self.scheme = scheme
+        self.layer0 = map_layers[0]
+        self.layer2 = map_layers[2]
+        self.collision_scheme = map_layers["collision_map_scheme"]
+        self.height, self.width = len(self.collision_scheme), len(self.collision_scheme[0])
 
-    @staticmethod
-    def get_scheme_coordinates(centre_coordinates):
-        x, y = centre_coordinates
-        col, row = trunc(x), trunc(y) + 1
-        return row, col
+        self.walls = self.load_walls()
+        self.wall_scheme = self.load_wall_scheme()
 
-    def fill_collision_cells_map(self, collision_scheme):
-        self.collision_scheme = collision_scheme
-        for row in range(len(collision_scheme)):
-            self.collision_cells_map.append([])
-            for col in range(len(collision_scheme[row])):
-                cell_code = collision_scheme[row][col]
-                self.collision_cells_map[row].append(
-                    Wall((col, row)) if cell_code == 1 else None
-                )
+        objects_map = get_objects(self.layer2)
+        self.player = objects_map["heros"][0]
+        self.enemy = objects_map["enemies"][0]
+        self.others = objects_map["others"]
+
+    def load_walls(self):
+        walls = []
+        for row in range(self.height):
+            for col in range(self.width):
+                is_wall = self.collision_scheme[row][col]
+                if is_wall:
+                    walls.append(Wall((col, row)))
+        return walls
+
+    def load_wall_scheme(self):
+        wall_scheme = []
+        for row in range(self.height):
+            wall_scheme.append([])
+            for col in range(self.width):
+                is_wall = self.collision_scheme[row][col]
+                wall_scheme[row].append(Wall((col, row)) if is_wall else None)
+        return wall_scheme
 
     def get_near_walls(self, coordinates: tuple[int, int], delta_side=2):
         result = []
-        y, x = Map.get_scheme_coordinates(coordinates)
-        height, width = len(self.collision_scheme), len(self.collision_scheme[0])
-
+        y, x = get_scheme_coordinates(coordinates)
         for col in range(y - delta_side, y + delta_side + 1):
             for row in range(x - delta_side, x + delta_side + 1):
-                if -1 < row < height and -1 < col < width:
-                    obj = self.collision_cells_map[col][row]
+                if -1 < row < self.height and -1 < col < self.width:
+                    obj = self.wall_scheme[col][row]
                     if isinstance(obj, Wall):
                         result.append(obj)
-
         return result
 
     def check_collision(self, obj: GameCollidingObject):
@@ -51,19 +64,26 @@ class Map:
                 return True
         return False
 
+    def clear_deleted_objects(self):
+        for game_object_index in range(len(self.others) - 1, -1, -1):
+            game_object = self.others[game_object_index]
+            if game_object.is_deleted():
+                self.others.pop(game_object_index)
+
+    def update(self):
+        self.clear_deleted_objects()
+
     def draw(self, display_manager: GamingDisplayManager):
-        for row in range(len(self.scheme)):
-            for col in range(len(self.scheme[0])):
-                obj_code = self.scheme[row][col]
-                img_type = "base"
-                display_manager.draw(obj_code, img_type, (col, row))
+        for row in range(self.height):
+            for col in range(self.width):
+                display_manager.draw_image(self.layer0[row][col], "base", (col, row))
 
     def draw_collisions(self, display_manager: GamingDisplayManager):
-        for row in self.collision_cells_map:
-            for col in row:
-                if isinstance(col, Wall):
-                    col.draw_collision(display_manager, col.get_code())
+        for cells_row in self.wall_scheme:
+            for cell in cells_row:
+                if isinstance(cell, Wall):
+                    cell.draw_collision(display_manager)
 
     def draw_near_collisions(self, display_manager: GamingDisplayManager, coordinates):
         for wall in self.get_near_walls(coordinates):
-            wall.draw_collision(display_manager, wall.get_code())
+            wall.draw_collision(display_manager)
