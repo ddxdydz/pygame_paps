@@ -11,20 +11,20 @@ SCENE_AUDIO_PATHS = {
     "sceleton_alert": ["data", "audio", "sound", "sceleton_alert.wav"]
 }
 OBJECTS_VISUALISATION = {
-    "floor_basic": {"size": (1, 1), "imgs": {"base": ["data", "imgs", "game_imgs", "map", "floor_basic.png"]}},
-    "floor_brick1": {"size": (1, 1), "imgs": {"base": ["data", "imgs", "game_imgs", "map", "floor_brick1.png"]}},
-    "floor_brick2": {"size": (1, 1), "imgs": {"base": ["data", "imgs", "game_imgs", "map", "floor_brick2.png"]}},
-    "floor_wooden1": {"size": (1, 1), "imgs": {"base": ["data", "imgs", "game_imgs", "map", "floor_wooden1.png"]}},
-    "floor_wooden2": {"size": (1, 1), "imgs": {"base": ["data", "imgs", "game_imgs", "map", "floor_wooden2.png"]}},
-    "floor_wooden3": {"size": (1, 1), "imgs": {"base": ["data", "imgs", "game_imgs", "map", "floor_wooden3.png"]}},
-    "stalagmites": {"size": (1, 1), "imgs": {"base": ["data", "imgs", "game_imgs", "map", "stalagmites.png"]}},
-    "wall_stone1": {"size": (1, 1), "imgs": {"base": ["data", "imgs", "game_imgs", "map", "wall_stone1.png"]}},
-    "wall_stone2": {"size": (1, 1), "imgs": {"base": ["data", "imgs", "game_imgs", "map", "wall_stone2.png"]}},
-    "wall_stone3": {"size": (1, 1), "imgs": {"base": ["data", "imgs", "game_imgs", "map", "wall_stone3.png"]}},
-    "window": {"size": (2, 8), "imgs": {"base": ["data", "imgs", "game_imgs", "map", "window.png"]}},
+    "floor_basic": {"size": (1, 1), "paths": {"base": ["data", "imgs", "game_imgs", "map", "floor_basic.png"]}},
+    "floor_brick1": {"size": (1, 1), "paths": {"base": ["data", "imgs", "game_imgs", "map", "floor_brick1.png"]}},
+    "floor_brick2": {"size": (1, 1), "paths": {"base": ["data", "imgs", "game_imgs", "map", "floor_brick2.png"]}},
+    "floor_wooden1": {"size": (1, 1), "paths": {"base": ["data", "imgs", "game_imgs", "map", "floor_wooden1.png"]}},
+    "floor_wooden2": {"size": (1, 1), "paths": {"base": ["data", "imgs", "game_imgs", "map", "floor_wooden2.png"]}},
+    "floor_wooden3": {"size": (1, 1), "paths": {"base": ["data", "imgs", "game_imgs", "map", "floor_wooden3.png"]}},
+    "stalagmites": {"size": (1, 1), "paths": {"base": ["data", "imgs", "game_imgs", "map", "stalagmites.png"]}},
+    "wall_stone1": {"size": (1, 1), "paths": {"base": ["data", "imgs", "game_imgs", "map", "wall_stone1.png"]}},
+    "wall_stone2": {"size": (1, 1), "paths": {"base": ["data", "imgs", "game_imgs", "map", "wall_stone2.png"]}},
+    "wall_stone3": {"size": (1, 1), "paths": {"base": ["data", "imgs", "game_imgs", "map", "wall_stone3.png"]}},
+    "window": {"size": (2, 8), "paths": {"base": ["data", "imgs", "game_imgs", "map", "window.png"]}},
     "hero": {
         "code": "pl", "size": (1, 1),
-        "imgs": {
+        "paths": {
             "base": ["data", "imgs", "game_imgs", "hero", "attack", "1.png"],
             "attack1": ["data", "imgs", "game_imgs", "hero", "attack", "1.png"],
             "attack2": ["data", "imgs", "game_imgs", "hero", "attack", "2.png"],
@@ -58,7 +58,7 @@ OBJECTS_VISUALISATION = {
     },
     "key": {
         "code": "ky", "size": (0.7, 0.7),
-        "imgs": {
+        "paths": {
             "base": ["data", "imgs", "game_imgs", "map_objects", "key", "key1.png"],
             "1": ["data", "imgs", "game_imgs", "map_objects", "key", "key1.png"],
             "2": ["data", "imgs", "game_imgs", "map_objects", "key", "key2.png"],
@@ -67,7 +67,7 @@ OBJECTS_VISUALISATION = {
     },
     "chess": {
         "code": "ch", "size": (0.7, 0.7),
-        "imgs": {
+        "paths": {
             "base": ["data", "imgs", "game_imgs", "map_objects", "chess", "chess1.png"],
             "1": ["data", "imgs", "game_imgs", "map_objects", "chess", "chess1.png"],
             "2": ["data", "imgs", "game_imgs", "map_objects", "chess", "chess2.png"],
@@ -77,7 +77,7 @@ OBJECTS_VISUALISATION = {
     },
     "vase": {
         "code": "vs", "size": (0.7, 0.7),
-        "imgs": {
+        "paths": {
             "base": ["data", "imgs", "game_imgs", "map_objects", "vase", "vase1.png"],
             "1": ["data", "imgs", "game_imgs", "map_objects", "vase", "vase1.png"],
             "2": ["data", "imgs", "game_imgs", "map_objects", "vase", "vase2.png"],
@@ -87,7 +87,7 @@ OBJECTS_VISUALISATION = {
     },
     "money": {
         "code": "mn", "size": (0.7, 0.7),
-        "imgs": {
+        "paths": {
             "base": ["data", "imgs", "game_imgs", "map_objects", "money", "money1.png"],
             "1": ["data", "imgs", "game_imgs", "map_objects", "money", "money1.png"],
             "2": ["data", "imgs", "game_imgs", "map_objects", "money", "money2.png"],
@@ -97,7 +97,7 @@ OBJECTS_VISUALISATION = {
     },
     "sceleton": {
         "code": "sc", "size": (0.7, 0.7),
-        "imgs": {
+        "paths": {
             "attack1": ["data", "imgs", "game_imgs", "skeleton", "attack", "1.png"],
             "attack2": ["data", "imgs", "game_imgs", "skeleton", "attack", "2.png"],
             "attack3": ["data", "imgs", "game_imgs", "skeleton", "attack", "3.png"],
@@ -172,4 +172,8 @@ OBJECTS_VISUALISATION = {
 }
 OBJECTS_ANIMATION = {
 
+}
+GAME_GUI_IMAGES = {
+    "health_bar": {"size": (2.25, 0.5), "paths": {"base": ["data", "imgs", "game_imgs", "other", "health_bar.png"]}},
+    "stamina_bar": {"size": (2.25, 0.5), "paths": {"base": ["data", "imgs", "game_imgs", "other", "stamina_bar.png"]}}
 }

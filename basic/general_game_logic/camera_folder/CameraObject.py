@@ -1,17 +1,15 @@
 import pygame
 
-from basic.general_settings import FPS, WINDOW_SIZE
-from basic.general_game_logic.game_base_settings import ONE_TICK_TO_PX, CAMERA_SPEED
 from basic.general_game_logic.base_objects.GameObject import GameObject
-
-WINDOWS_PER_SECOND = CAMERA_SPEED
 
 
 class CameraObject(GameObject):
-    def __init__(self, coordinates):
+    def __init__(self, coordinates, move_step):
         super().__init__(coordinates)
-        ticks_count = min(WINDOW_SIZE) / ONE_TICK_TO_PX
-        self.move_step = (ticks_count * WINDOWS_PER_SECOND) / FPS
+        self.move_step = move_step
+
+    def set_move_step(self, move_step):
+        self.move_step = move_step
 
     def get_move_step(self):
         return self.move_step

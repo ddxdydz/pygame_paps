@@ -1,6 +1,7 @@
-from basic.general_settings import FPS
 from basic.general_game_logic.base_objects.GameCollidingObject import GameCollidingObject
-from basic.general_game_logic.visualization.GamingDisplayManager import GamingDisplayManager
+from basic.general_game_logic.scene_folder.Scene import Scene
+from basic.general_game_logic.visualization.GameDisplayManager import GameDisplayManager
+from basic.general_settings import FPS
 
 
 class Vase(GameCollidingObject):
@@ -12,11 +13,15 @@ class Vase(GameCollidingObject):
     }
     frames_per_second = 4
 
-    def __init__(self, coordinates, size=(0, 0)):
+    def __init__(self, coordinates, size, parent_scene: Scene):
         super().__init__(coordinates, size)
+        self.parent_scene = parent_scene
         self.create_collision_rect(0.1, -0.1, 0.5, 0.5)
         self.current_stage = Vase.CLOSED
         self.is_collected = False
+
+        # Target
+        self.target_object = GameCollidingObject((0, 0))  # default
 
         # Animated
         self.change_frame_time = 1 / Vase.frames_per_second  # sec
@@ -48,7 +53,7 @@ class Vase(GameCollidingObject):
         self.update_frame()
         self.check_stages()
 
-    def draw(self, display_manager: GamingDisplayManager):
+    def draw(self, display_manager: GameDisplayManager):
         display_manager.draw_image(
             "vase", Vase.frames[self.current_stage][self.current_frame_index],
             self.get_coordinates()

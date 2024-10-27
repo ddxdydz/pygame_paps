@@ -1,9 +1,9 @@
 from math import inf
 
-from basic.general_game_logic.dynamic.damage_system.DamageController import DamageController
-from basic.general_game_logic.dynamic.damage_system.DamageArea import DamageArea
 from basic.general_game_logic.base_objects.GameMovingObject import GameMovingObject
-from basic.general_game_logic.visualization.GamingDisplayManager import GamingDisplayManager
+from basic.general_game_logic.dynamic.damage_system.DamageArea import DamageArea
+from basic.general_game_logic.dynamic.damage_system.DamageController import DamageController
+from basic.general_game_logic.visualization.GameDisplayManager import GameDisplayManager
 
 
 class GameDynamicObject(GameMovingObject):
@@ -42,7 +42,7 @@ class GameDynamicObject(GameMovingObject):
     def process_getting_damage(self, damage):
         self.decrease_health(damage)
 
-    def draw_damage_area_collision(self, display_manager: GamingDisplayManager):
+    def draw_damage_area_collision(self, display_manager: GameDisplayManager):
         self.damage_area.set_coordinates(self.get_coordinates())
         left_upper_x, left_upper_y = self.damage_area.get_collision_rect_coordinates()[0]
         size = self.damage_area.get_collision_rect().get_rect_size()

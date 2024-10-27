@@ -1,5 +1,5 @@
-from basic.general_game_logic.dynamic.movement_system.MovementController import MovementController
 from basic.general_game_logic.base_objects.GameCollidingObject import GameCollidingObject
+from basic.general_game_logic.dynamic.movement_system.MovementController import MovementController
 
 
 class GameMovingObject(GameCollidingObject):

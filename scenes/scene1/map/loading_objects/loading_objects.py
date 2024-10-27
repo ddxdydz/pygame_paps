@@ -1,12 +1,13 @@
 from basic.general_game_logic.base_objects.GameObject import GameObject
-from basic.general_game_logic.game_base_settings import EMPTY_CODE
-from scenes.scene1.general.scene_settings import OBJECTS_VISUALISATION
+from basic.general_game_logic.scene_folder.Scene import Scene
+from basic.general_settings import EMPTY_CODE
 from scenes.scene1.game_objects.Chess import Chess
 from scenes.scene1.game_objects.Key import Key
 from scenes.scene1.game_objects.Money import Money
+from scenes.scene1.game_objects.Player import Player
 from scenes.scene1.game_objects.Sceleton import Sceleton
 from scenes.scene1.game_objects.Vase import Vase
-from scenes.scene1.game_objects.Player import Player
+from scenes.scene1.general.scene_settings import OBJECTS_VISUALISATION
 
 class_map = {
     "chess": Chess,
@@ -18,17 +19,17 @@ class_map = {
 }
 
 
-def get_objects(scheme):
-    game_objects = {"heros": [], "enemies": [], "others": []}
+def get_objects(scheme, parent_scene: Scene):
+    game_objects = {"heroes": [], "enemies": [], "others": []}
     for row in range(len(scheme)):
         for col in range(len(scheme[0])):
             code = scheme[row][col]
             if code != EMPTY_CODE:
                 width, height = OBJECTS_VISUALISATION[code]["size"]
                 dx, dy = (1 - width) / 2, (1 - height) / 2  # centering
-                obj = class_map[code]((col + dx, row - dy), size=(width, height))
+                obj = class_map[code]((col + dx, row - dy), size=(width, height), parent_scene=parent_scene)
                 if code == "hero":
-                    game_objects["heros"].append(obj)
+                    game_objects["heroes"].append(obj)
                 elif code == "sceleton":
                     game_objects["enemies"].append(obj)
                 else:

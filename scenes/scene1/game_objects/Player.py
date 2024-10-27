@@ -1,9 +1,10 @@
 import pygame
 
-from basic.general_settings import FPS
-from basic.general_game_logic.dynamic.damage_system.DamageArea import DamageArea
 from basic.general_game_logic.base_objects.GameDynamicObject import GameDynamicObject
-from basic.general_game_logic.visualization.GamingDisplayManager import GamingDisplayManager
+from basic.general_game_logic.dynamic.damage_system.DamageArea import DamageArea
+from basic.general_game_logic.scene_folder.Scene import Scene
+from basic.general_game_logic.visualization.GameDisplayManager import GameDisplayManager
+from basic.general_settings import FPS
 
 
 class Player(GameDynamicObject):
@@ -28,11 +29,12 @@ class Player(GameDynamicObject):
     }
     long_term_stages = (ATTACK, DEAD, HIT)
 
-    def __init__(self, coordinates, size=(0, 0)):
+    def __init__(self, coordinates, size, parent_scene: Scene):
         super().__init__(coordinates, size)
+        self.parent_scene = parent_scene
         self.create_collision_rect(0.35, -0.3, 0.3, 0.6)
         self.audio_manager = None
-        self.gaming_gui_manager = None
+        self.game_gui_manager = None
         self.current_stage = Player.STAY
         self.enable_updating = True
 
@@ -68,12 +70,12 @@ class Player(GameDynamicObject):
         if self.audio_manager is not None:
             self.audio_manager.load_sound(sound_name)
 
-    def set_gaming_gui_manager(self, gaming_gui_manager):
-        self.gaming_gui_manager = gaming_gui_manager
+    def set_game_gui_manager(self, game_gui_manager):
+        self.game_gui_manager = game_gui_manager
 
     def show_message_safety(self, message):
-        if self.gaming_gui_manager is not None:
-            self.gaming_gui_manager.show_message(message)
+        if self.game_gui_manager is not None:
+            self.game_gui_manager.show_message(message)
 
     def update_frame(self):
         self.current_time -= 1 / FPS
@@ -145,7 +147,7 @@ class Player(GameDynamicObject):
         if self.current_stage != Player.DEAD:
             self.current_stage = Player.HIT
             self.set_stage_updating_delay()
-            self.gaming_gui_manager.show_message(
+            self.game_gui_manager.show_message(
                 f"- Вы получили дамаг: {damage}. Текущее количество hp: {self.current_health}"
             )
             self.audio_manager.load_sound("hero_hit")
@@ -207,7 +209,7 @@ class Player(GameDynamicObject):
         self.update_stages()
         self.update_frame()
 
-    def draw(self, display_manager: GamingDisplayManager):
+    def draw(self, display_manager: GameDisplayManager):
         display_manager.draw_image(
             "hero", Player.frames[self.current_stage][self.current_frame_index],
             self.get_coordinates(),

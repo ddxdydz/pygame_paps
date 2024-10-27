@@ -1,7 +1,7 @@
 import pygame
 
 from basic.tools.loading_files import join_path, load_image
-from basic.general_settings import AUDIO_PATHS, IMAGE_PATHS, FPS
+from basic.general_settings import IMAGE_PATHS, FPS
 
 
 class AudioManager:
@@ -36,7 +36,7 @@ class AudioManager:
         self.loaded_images["audio_on"] = load_image(IMAGE_PATHS["audio_on"], size=(50, 50))
 
     def load_music(self, music_name):
-        if self.enable and self.is_loaded_name(music_name):
+        if self.enable and self.is_loaded_name(music_name) and not self.pause:
             pygame.mixer.music.load(self.loaded_audio[music_name])
             pygame.mixer.music.set_volume(self.music_volume)
             pygame.mixer.music.play(-1)
@@ -103,21 +103,28 @@ class AudioManager:
         if self.current_time == 0:
             return
 
-        size = width, height = 50, 65  # px
-        left_padding = (screen.get_size()[0] - width) // 2
-        upper_padding = 20
+        size = width, height = 100, 100  # px
 
+        text_size = width // 5
         audio_state_surface = pygame.Surface(size).convert_alpha()
-        audio_state_surface.fill("black")
+        audio_state_surface.fill("blue")
+        audio_state_surface.set_colorkey("blue")
+        pygame.draw.rect(audio_state_surface, "black", (0, 0, *size), border_radius=width // 4)
+
+        img_width, img_height = self.loaded_images["audio_off"].size
+
+        surface_upper_padding = (height - img_height - text_size) // 2
 
         if self.pause:
-            audio_state_surface.blit(self.loaded_images["audio_off"], (2, 0))
+            audio_state_surface.blit(self.loaded_images["audio_off"], ((width - img_width) // 2, surface_upper_padding))
         else:
-            audio_state_surface.blit(self.loaded_images["audio_on"], (2, 0))
+            audio_state_surface.blit(self.loaded_images["audio_on"], ((width - img_width) // 2, surface_upper_padding))
 
-        annotation_font = pygame.font.Font(None, 20)
-        text = annotation_font.render(f"   {round(pygame.mixer.music.get_volume() * 100)}%", True, "white")
-        audio_state_surface.blit(text, (0, self.loaded_images["audio_on"].height))
+        annotation_font = pygame.font.Font(None, text_size)
+        text = annotation_font.render(f"{round(pygame.mixer.music.get_volume() * 100)}%", True, "white")
+        audio_state_surface.blit(text, ((width - text.width) // 2, surface_upper_padding + img_height))
 
         audio_state_surface.set_alpha(int(255 * (self.current_time / self.time_for_showing)))
+        left_padding = (screen.width - width) // 2
+        upper_padding = round(screen.height * 0.02)
         screen.blit(audio_state_surface, (left_padding, upper_padding))

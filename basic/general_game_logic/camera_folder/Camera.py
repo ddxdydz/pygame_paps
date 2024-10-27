@@ -1,18 +1,21 @@
 from basic.general_game_logic.base_objects.GameObject import GameObject
 from basic.general_game_logic.camera_folder.CameraObject import CameraObject
-from basic.general_game_logic.game_base_settings import ONE_TICK_TO_PX
-from basic.general_settings import WINDOW_WIDTH, WINDOW_HEIGHT
+from basic.general_settings import CAMERA_SPEED, FPS
+from basic.general_settings import ONE_TICK_TO_PX, WINDOW_SIZE
+
+
+WINDOWS_PER_SECOND = CAMERA_SPEED
 
 
 class Camera(GameObject):
-
-    def __init__(self, coordinates=(0, 0)):
-        super().__init__(coordinates, size=(
-            WINDOW_WIDTH / ONE_TICK_TO_PX, WINDOW_HEIGHT / ONE_TICK_TO_PX
-        ))
+    def __init__(self, coordinates=(0, 0), screen_size=WINDOW_SIZE, size_tick_scale=ONE_TICK_TO_PX):
+        super().__init__(coordinates)
 
         # Default object
-        self.camera_object = CameraObject((0, 0))
+        self.camera_object = CameraObject((0, 0), 0)
+
+        # Set visualization parameters
+        self.update_visualization_parameters(screen_size, size_tick_scale)
 
         # Observed parameters:
         self.observed_object = self.camera_object
@@ -20,7 +23,7 @@ class Camera(GameObject):
         # Mods parameters:
         self.is_free = True
 
-    # Fixed camera functions:
+    # Camera actions:
 
     def fix_camera_on_object(self, obj: GameObject):
         self.is_free = False
@@ -31,17 +34,10 @@ class Camera(GameObject):
         self.camera_object.set_coordinates(coordinates)
         self.observed_object = self.camera_object
 
-    # Free observing mod functions:
-
     def enable_free_observing_mod(self):
-        self.camera_object.set_coordinates(
-            self.observed_object.get_centre_coordinates())
-        self.observed_object = self.camera_object
         self.is_free = True
-
-    def update_free_observing_mod(self):
-        if self.is_free:
-            self.camera_object.update()
+        self.camera_object.set_coordinates(self.observed_object.get_centre_coordinates())
+        self.observed_object = self.camera_object
 
     # Info
 
@@ -57,6 +53,10 @@ class Camera(GameObject):
         """
 
     # For updating:
+    def update_visualization_parameters(self, screen_size, size_tick_scale):
+        self.set_obj_size((screen_size[0] / size_tick_scale, screen_size[1] / size_tick_scale))
+        ticks_count = min(screen_size) / size_tick_scale
+        self.camera_object.set_move_step((ticks_count * WINDOWS_PER_SECOND) / FPS)
 
     def update_coordinates(self):
         xc, yc = self.observed_object.get_centre_coordinates()
@@ -64,4 +64,5 @@ class Camera(GameObject):
 
     def update(self):
         self.update_coordinates()
-        self.update_free_observing_mod()
+        if self.is_free:
+            self.camera_object.update()

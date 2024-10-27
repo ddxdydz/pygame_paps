@@ -1,5 +1,5 @@
-from basic.general_game_logic.game_base_settings import MIN_PROCESSING_MOVE_DELTA
 from basic.general_game_logic.base_objects.GameCollidingObject import GameCollidingObject
+from basic.general_settings import MIN_PROCESSING_MOVE_DELTA
 
 
 class MovementController:

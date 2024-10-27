@@ -1,6 +1,7 @@
 import pygame
 
 from basic.general_game_logic.scene_folder.Scene import Scene
+from scenes.scene2.general.rules import RULES
 from scenes.scene2.game_objects.Player import Player
 from scenes.scene2.general.scene_settings import OBJECTS_VISUALISATION
 from scenes.scene2.map.Map import Map
@@ -10,7 +11,6 @@ class Scene2(Scene):
     def __init__(self, screen, audio_manager):
         super().__init__(screen, audio_manager)
         self.display_manager.load_images(OBJECTS_VISUALISATION)
-        self.is_over = False
         self.show_collisions = False
 
         self.map = Map()
@@ -19,6 +19,9 @@ class Scene2(Scene):
         self.player.add_hard_objects(self.map.walls)
 
         self.camera.fix_camera_on_object(self.player)
+
+    def get_rules(self):
+        return RULES
 
     def process_event(self, event):
         if event.type == pygame.KEYDOWN:

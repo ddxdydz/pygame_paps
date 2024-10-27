@@ -1,13 +1,16 @@
 from basic.general_game_logic.base_objects.GameCollidingObject import GameCollidingObject
-from basic.general_game_logic.visualization.GamingDisplayManager import GamingDisplayManager
+from basic.general_game_logic.scene_folder.Scene import Scene
+from basic.general_game_logic.visualization.GameDisplayManager import GameDisplayManager
 from scenes.scene1.game_objects.Wall import Wall
-from scenes.scene1.general.loading_objects.loading_objects import get_objects
-from scenes.scene1.map.layers_generator.maze.MazeLayersGenerator import MazeLayersGenerator
 from scenes.scene1.map.layers_generator.get_scheme_coordinates import get_scheme_coordinates
+from scenes.scene1.map.layers_generator.maze.MazeLayersGenerator import MazeLayersGenerator
+from scenes.scene1.map.loading_objects.loading_objects import get_objects
 
 
 class Map:
-    def __init__(self):
+    def __init__(self, parent_scene: Scene):
+        self.parent_scene = parent_scene
+
         maze_layers_generator = MazeLayersGenerator(width=15, height=15)
         maze_layers_generator.set_floor_codes(["floor_wooden1", "floor_wooden2", "floor_wooden3"])
         maze_layers_generator.set_wall_codes(["wall_stone1", "wall_stone2", "wall_stone3"])
@@ -23,8 +26,8 @@ class Map:
         self.walls = self.load_walls()
         self.wall_scheme = self.load_wall_scheme()
 
-        objects_map = get_objects(self.layer2)
-        self.player = objects_map["heros"][0]
+        objects_map = get_objects(self.layer2, self.parent_scene)
+        self.player = objects_map["heroes"][0]
         self.enemy = objects_map["enemies"][0]
         self.others = objects_map["others"]
 
@@ -73,17 +76,17 @@ class Map:
     def update(self):
         self.clear_deleted_objects()
 
-    def draw(self, display_manager: GamingDisplayManager):
+    def draw(self, display_manager: GameDisplayManager):
         for row in range(self.height):
             for col in range(self.width):
                 display_manager.draw_image(self.layer0[row][col], "base", (col, row))
 
-    def draw_collisions(self, display_manager: GamingDisplayManager):
+    def draw_collisions(self, display_manager: GameDisplayManager):
         for cells_row in self.wall_scheme:
             for cell in cells_row:
                 if isinstance(cell, Wall):
                     cell.draw_collision(display_manager)
 
-    def draw_near_collisions(self, display_manager: GamingDisplayManager, coordinates):
+    def draw_near_collisions(self, display_manager: GameDisplayManager, coordinates):
         for wall in self.get_near_walls(coordinates):
             wall.draw_collision(display_manager)

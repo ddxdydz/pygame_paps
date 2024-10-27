@@ -1,4 +1,4 @@
-from basic.general_game_logic.visualization.GamingDisplayManager import GamingDisplayManager
+from basic.general_game_logic.visualization.GameDisplayManager import GamingDisplayManager
 from scenes.scene1.game_objects.Wall import Wall
 from scenes.scene2.general.scene_settings import OBJECTS_VISUALISATION
 from scenes.scene2.map.load_borders import load_borders
@@ -11,6 +11,7 @@ class Map:
         self.walls = load_borders(self.size)
 
     def draw(self, display_manager: GamingDisplayManager):
+        display_manager.draw_image("map_fon", "base", (-8, 28))
         display_manager.draw_image("map_background", "base", (0, 24))
 
     def draw_collisions(self, display_manager: GamingDisplayManager):

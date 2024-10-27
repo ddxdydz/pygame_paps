@@ -1,16 +1,22 @@
 import sys
+
 import pygame
 
-from basic.general_gui.Messanger import Messanger
+from basic.audio.AudioManager import AudioManager
+from basic.general_game_logic.scene_folder.Scene import Scene
 from basic.general_settings import FPS
+from basic.general_visualization.general_gui.Messanger import Messanger
+from basic.general_visualization.general_gui.general_gui_elements.FpsBar import FpsBar
 
 
 class SceneLoader:
-    def __init__(self, audio_manager):
+    def __init__(self, audio_manager: AudioManager()):
         self.audio_manager = audio_manager
         self.messanger = Messanger(self.audio_manager)
 
-    def load(self, scene):
+    def load(self, scene: Scene):
+        fps_bar = FpsBar()
+
         clock = pygame.time.Clock()
 
         running = True
@@ -24,20 +30,24 @@ class SceneLoader:
                     if event.key == pygame.K_ESCAPE:
                         self.audio_manager.load_sound("notification")
                         mes_event = self.messanger.show_message(
-                            "Для выхода в главное меню нажмите Enter", scene.get_screen())
+                            scene.get_screen(),
+                            "Для выхода в главное меню нажмите Enter"
+                        )
                         if mes_event.type == pygame.KEYDOWN:
                             if mes_event.key == 13:  # enter
                                 self.audio_manager.load_sound("lose")
                                 running = False
+                    elif event.key == pygame.K_TAB:
+                        fps_bar.change_show()
                 self.audio_manager.process_event(event)
                 scene.process_event(event)
 
+            scene.update()
+            scene.draw()
             if scene.is_over:
                 running = False
-            else:
-                scene.update()
-                scene.get_screen().fill("black")
-                scene.draw(scene.get_screen())
+
+            fps_bar.show_fps(scene.get_screen(), int(clock.get_fps()))
 
             self.audio_manager.update(FPS)
             self.audio_manager.draw_ui(scene.get_screen())

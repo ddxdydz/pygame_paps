@@ -1,6 +1,6 @@
 from random import choice, randint
 
-from basic.general_game_logic.game_base_settings import EMPTY_CODE
+from basic.general_settings import EMPTY_CODE
 from scenes.scene1.map.layers_generator.maze.MazeGenerator import MazeGenerator, WALL, EMPTY
 
 

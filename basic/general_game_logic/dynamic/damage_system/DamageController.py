@@ -1,5 +1,5 @@
-from basic.general_game_logic.collisions.rectangle_collision.CollisionChecker import CollisionChecker
 from basic.general_game_logic.base_objects.GameCollidingObject import GameCollidingObject
+from basic.general_game_logic.collisions.rectangle_collision.CollisionChecker import CollisionChecker
 from basic.general_game_logic.dynamic.damage_system.DamageArea import DamageArea
 
 

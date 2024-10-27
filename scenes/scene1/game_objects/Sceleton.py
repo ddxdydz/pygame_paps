@@ -1,10 +1,11 @@
-from basic.general_settings import FPS
-from basic.general_game_logic.dynamic.damage_system.DamageArea import DamageArea
-from basic.general_game_logic.base_objects.GameObject import GameObject
 from basic.general_game_logic.base_objects.GameDynamicObject import GameDynamicObject
-from basic.general_game_logic.visualization.GamingDisplayManager import GamingDisplayManager
-from scenes.scene1.map.layers_generator.maze.maze_solver import bfs
+from basic.general_game_logic.base_objects.GameObject import GameObject
+from basic.general_game_logic.dynamic.damage_system.DamageArea import DamageArea
+from basic.general_game_logic.scene_folder.Scene import Scene
+from basic.general_game_logic.visualization.GameDisplayManager import GameDisplayManager
+from basic.general_settings import FPS
 from scenes.scene1.map.layers_generator.get_scheme_coordinates import get_scheme_coordinates
+from scenes.scene1.map.layers_generator.maze.maze_solver import bfs
 
 
 class Sceleton(GameDynamicObject):
@@ -32,11 +33,12 @@ class Sceleton(GameDynamicObject):
     }
     long_term_stages = (ATTACK, DEAD, REACT, HIT)
 
-    def __init__(self, coordinates, size):
+    def __init__(self, coordinates, size, parent_scene: Scene):
         super().__init__(coordinates, size)
+        self.parent_scene = parent_scene
         self.create_collision_rect(0.14, -0.15, 0.42, 0.55)
         self.audio_manager = None
-        self.gaming_gui_manager = None
+        self.game_gui_manager = None
         self.current_stage = Sceleton.STAY
         self.enable_updating = True
 
@@ -72,12 +74,12 @@ class Sceleton(GameDynamicObject):
         if self.audio_manager is not None:
             self.audio_manager.load_sound(sound_name)
 
-    def set_gaming_gui_manager(self, gaming_gui_manager):
-        self.gaming_gui_manager = gaming_gui_manager
+    def set_game_gui_manager(self, game_gui_manager):
+        self.game_gui_manager = game_gui_manager
 
     def show_message_safety(self, message):
-        if self.gaming_gui_manager is not None:
-            self.gaming_gui_manager.show_message(message)
+        if self.game_gui_manager is not None:
+            self.game_gui_manager.show_message(message)
 
     def update_frame(self):
         self.current_time -= 1 / FPS
@@ -150,12 +152,14 @@ class Sceleton(GameDynamicObject):
             self.update_stages(Sceleton.ATTACK)
 
     def process_getting_damage(self, damage):
+        if self.current_stage == Sceleton.DEATH:
+            return
         self.decrease_health(damage)
         self.is_alert = True
         if self.current_stage != Sceleton.DEAD:
             self.current_stage = Sceleton.HIT
             self.set_stage_updating_delay()
-            self.gaming_gui_manager.show_message(
+            self.game_gui_manager.show_message(
                 f"- Sceleton получил дамаг: {damage}. Текущее количество hp: {self.current_health}"
             )
             self.audio_manager.load_sound("sceleton_hit")
@@ -207,21 +211,21 @@ class Sceleton(GameDynamicObject):
         self.update_stages()
         self.update_frame()
 
-    def draw(self, display_manager: GamingDisplayManager):
+    def draw(self, display_manager: GameDisplayManager):
         display_manager.draw_image(
             "sceleton", Sceleton.frames[self.current_stage][self.current_frame_index],
             self.get_coordinates(),
             self.vertical_reverse
         )
 
-    def draw_attention_zone(self, display_manager: GamingDisplayManager):
+    def draw_attention_zone(self, display_manager: GameDisplayManager):
         if not self.is_alert:
             display_manager.draw_circle(
                 *self.get_centre_coordinates(),
                 self.alert_distance,
             )
 
-    def draw_attack_zone(self, display_manager: GamingDisplayManager):
+    def draw_attack_zone(self, display_manager: GameDisplayManager):
         display_manager.draw_circle(
             *self.get_centre_coordinates(),
             self.current_attack_distance,

@@ -1,26 +1,14 @@
 import pygame
 
-from basic.tools.loading_files import load_image
 from basic.general_settings import FPS
-from basic.general_game_logic.game_base_settings import ONE_GGUI_TICK_TO_PX
-from basic.general_game_logic.visualization.game_gui_settings import GAME_GUI_IMAGES
-from scenes.scene1.general.scene_settings import OBJECTS_VISUALISATION
+from basic.general_settings import ONE_GGUI_TICK_TO_PX
+from basic.general_visualization.ImageLoader import ImageLoader
+from basic.tools.loading_files import load_image
 
 
-class GamingGuiManager:
-    health_bar_image = load_image(
-        GAME_GUI_IMAGES["health_bar"]["path"],
-        size=(GAME_GUI_IMAGES["health_bar"]["size"][0] * ONE_GGUI_TICK_TO_PX,
-              GAME_GUI_IMAGES["health_bar"]["size"][1] * ONE_GGUI_TICK_TO_PX)
-    )
-    stamina_bar_image = load_image(
-        GAME_GUI_IMAGES["stamina_bar"]["path"],
-        size=(GAME_GUI_IMAGES["stamina_bar"]["size"][0] * ONE_GGUI_TICK_TO_PX,
-              GAME_GUI_IMAGES["stamina_bar"]["size"][1] * ONE_GGUI_TICK_TO_PX)
-    )
-
+class GameGuiManager(ImageLoader):
     def __init__(self):
-        self.loaded_images = dict()  # {obj_code: img}
+        super().__init__(ONE_GGUI_TICK_TO_PX)
 
         self.show_timer = False
         self.show_gui = True
@@ -77,22 +65,11 @@ class GamingGuiManager:
     def switch_show_gui(self):
         self.show_gui = not self.show_gui
 
-    def get_item_image(self, obj_code, size, img_type="base"):
-        if obj_code in self.loaded_images.keys():
-            return self.loaded_images[obj_code]
-        # width, height = OBJECTS_SETTINGS[name]["size"]
-        width, height = size
-        path = OBJECTS_VISUALISATION[obj_code]["imgs"][img_type]
-        img = load_image(path, size=(width * ONE_GGUI_TICK_TO_PX, height * ONE_GGUI_TICK_TO_PX))
-        self.loaded_images[obj_code] = img
-        return img
-
     def get_item_surface(self, obj_code):
         size = width, height = 1 * ONE_GGUI_TICK_TO_PX, 1 * ONE_GGUI_TICK_TO_PX  # px
         item_surface = pygame.Surface(size).convert_alpha()
         item_surface.fill("purple")
-        colorkey = item_surface.get_at((0, 0))
-        item_surface.set_colorkey(colorkey)
+        item_surface.set_colorkey("purple")
 
         pygame.draw.rect(
             item_surface, pygame.Color(35, 7, 52), ((0, 0), size),
@@ -104,8 +81,8 @@ class GamingGuiManager:
             border_radius=int(0.25 * ONE_GGUI_TICK_TO_PX) + 1, width=int(0.03 * ONE_GGUI_TICK_TO_PX) + 1
         )
 
-        item_image = self.get_item_image(obj_code, size=(0.5, 0.5))
-        item_surface.blit(item_image, (0.25 * ONE_GGUI_TICK_TO_PX, 0.25 * ONE_GGUI_TICK_TO_PX))
+        item_image = self.get_image(obj_code, "base")
+        item_surface.blit(item_image, ((width - item_image.get_width()) // 2, (height - item_image.get_height()) // 2))
 
         text_font = pygame.font.Font(None, int(0.2 * ONE_GGUI_TICK_TO_PX))
         text = text_font.render(str(self.list_of_items[obj_code]["count"]), True, "white")
@@ -149,7 +126,7 @@ class GamingGuiManager:
         upper_filling_padding = 0.17 * ONE_GGUI_TICK_TO_PX
         filling_height = 0.2 * ONE_GGUI_TICK_TO_PX
         max_filling_weight = 2 * ONE_GGUI_TICK_TO_PX
-        img = GamingGuiManager.health_bar_image
+        img = self.get_image("health_bar", "base")
 
         bar_panel = pygame.Surface(img.get_size())
         bar_panel.fill("pink")
@@ -170,7 +147,7 @@ class GamingGuiManager:
         upper_filling_padding = 0.14 * ONE_GGUI_TICK_TO_PX
         filling_height = 0.2 * ONE_GGUI_TICK_TO_PX
         max_filling_weight = 2.2 * ONE_GGUI_TICK_TO_PX
-        img = GamingGuiManager.stamina_bar_image
+        img = self.get_image("stamina_bar", "base")
 
         bar_panel = pygame.Surface(img.get_size())
         bar_panel.fill("pink")
