@@ -3,7 +3,7 @@ import pygame
 from basic.general_game_logic.base_objects.GameDynamicObject import GameDynamicObject
 from basic.general_game_logic.dynamic.damage_system.DamageArea import DamageArea
 from basic.general_game_logic.scene_folder.Scene import Scene
-from basic.general_game_logic.visualization.GameDisplayManager import GameDisplayManager
+from basic.general_game_logic.game_visualization.game_process_visualization.GameGraphicManager import GameGraphicManager
 from basic.general_settings import FPS
 
 
@@ -157,7 +157,7 @@ class Player(GameDynamicObject):
             self.load_sound_safety("death")
             self.current_stage = Player.DEAD
             self.set_stage_updating_delay()
-            self.enable_updating = False
+            self.parent_scene.player_enable_updating = False
 
     def process_controller(self):
         self.current_attack_delay -= 1 / FPS
@@ -202,14 +202,14 @@ class Player(GameDynamicObject):
                     self.set_stage_updating_delay()
 
     def update(self):
-        if self.enable_updating:
+        if self.parent_scene.player_enable_updating:
             self.process_controller()
             self.update_stamina()
             self.check_death()
         self.update_stages()
         self.update_frame()
 
-    def draw(self, display_manager: GameDisplayManager):
+    def draw(self, display_manager: GameGraphicManager):
         display_manager.draw_image(
             "hero", Player.frames[self.current_stage][self.current_frame_index],
             self.get_coordinates(),

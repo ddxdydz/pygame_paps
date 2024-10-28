@@ -2,6 +2,7 @@ import pygame
 
 from basic.general_settings import FPS
 from basic.general_visualization.general_gui.general_gui_elements.GuiElement import GuiElement
+from basic.tools.get_dynamic_alpha import get_dynamic_alpha
 
 
 class DisappearingMessage(GuiElement):
@@ -15,7 +16,6 @@ class DisappearingMessage(GuiElement):
         self.time_message_showing = 3  # sec
         self.time_start_decrease_alpha = 2
         self.current_time_message_showing = 0
-
         self.default_visibility = 255
 
     def set_font_size(self, font_size: int):
@@ -40,9 +40,10 @@ class DisappearingMessage(GuiElement):
         if self.current_time_message_showing == 0:
             return
         text = self.text_font.render(f"{self.message}", True, self.color)
-        if self.current_time_message_showing - self.time_start_decrease_alpha < 0:
-            delta = self.time_message_showing - self.time_start_decrease_alpha
-            text.set_alpha(int(255 * (self.current_time_message_showing / delta)))
+        text.set_alpha(get_dynamic_alpha(
+            self.time_message_showing, self.time_start_decrease_alpha,
+            self.current_time_message_showing, self.default_visibility
+        ))
         screen.blit(text, (x, y))
 
     def update(self):

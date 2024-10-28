@@ -3,8 +3,9 @@ import sys
 import pygame
 
 from basic.audio.AudioManager import AudioManager
-from basic.general_settings import FPS
+from basic.general_settings import FPS, IMAGE_PATHS
 from basic.tools.get_center_drawing_coordinates import get_center_drawing_coordinates
+from basic.tools.loading_files import load_image
 
 
 class Messanger:
@@ -69,6 +70,12 @@ class Messanger:
                     elif event.type == pygame.KEYDOWN:
                         if event.key == self.end_key_code:
                             running = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == 13:  # Enter
+                        mods = pygame.key.get_mods()
+                        if mods & pygame.KMOD_ALT:
+                            pygame.display.toggle_fullscreen()
+                            pygame.display.set_icon(load_image(IMAGE_PATHS["icon"]))
 
             self.draw_message(screen)
 

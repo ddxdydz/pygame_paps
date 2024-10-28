@@ -1,38 +1,29 @@
 import pygame
 
 from basic.general_game_logic.base_objects.GameObject import GameObject
-from basic.general_game_logic.camera_folder.Camera import Camera
-from basic.general_game_logic.visualization.converting.DrawConverting import DrawConverting
-from basic.general_settings import ONE_TICK_TO_PX
-from basic.general_visualization.ImageLoader import ImageLoader
+from basic.general_game_logic.game_visualization.camera_folder.Camera import Camera
+from basic.general_game_logic.game_visualization.game_process_visualization.support.GameGraphicScaler import \
+    GameGraphicScaler
+from basic.general_game_logic.game_visualization.game_process_visualization.support.converting.DrawConverting import \
+    DrawConverting
+from basic.general_settings import DEFAULT_WINDOW_SIZE, DEFAULT_TICK_SIZE
 
 
-class GameDisplayManager(ImageLoader):
-    def __init__(self, screen):
-        super().__init__(ONE_TICK_TO_PX)
+class GameGraphicManager(GameGraphicScaler):
+    def __init__(self, screen, default_windows_size=DEFAULT_WINDOW_SIZE, default_tick_size=DEFAULT_TICK_SIZE):
+        super().__init__(default_windows_size, default_tick_size)
         self.screen = screen
         self.camera = Camera()
 
-    def get_screen(self):
+    def get_screen(self) -> pygame.Surface:
         return self.screen
 
-    def get_camera(self):
+    def get_camera(self) -> Camera:
         return self.camera
 
-    def set_size_tick_scale(self, size_tick_scale):
-        if size_tick_scale < 0:
-            size_tick_scale = 0
-        self.size_tick_scale = size_tick_scale
-        self.camera.update_visualization_parameters(
-            self.screen.get_size(), size_tick_scale
-        )
-
-    def auto_set_size_tick_scale(self):
-        pass
-
-    def to_draw_coordinates(self, x, y):
+    def to_draw_coordinates(self, x: float, y: float) -> tuple[float, float]:
         return DrawConverting.main_to_draw_coordinates(
-            (x, y), self.camera.get_coordinates(), self.size_tick_scale
+            (x, y), self.camera.get_coordinates(), self.get_current_tick_size()
         )
 
     def check_max_draw_distance(self, obj_x, obj_y, obj_width, obj_height) -> bool:
@@ -44,19 +35,18 @@ class GameDisplayManager(ImageLoader):
 
     def draw_rect(self, x, y, width, height, color="blue"):
         if self.check_max_draw_distance(x, y, width, height):
-            scaled_size = width * self.size_tick_scale, height * self.size_tick_scale
             pygame.draw.rect(
                 self.screen, color,
-                (*self.to_draw_coordinates(x, y), *scaled_size),
-                width=int(0.04 * self.size_tick_scale) + 1
+                (*self.to_draw_coordinates(x, y), *self.scale_size((width, height))),
+                width=int(0.04 * self.get_current_tick_size()) + 1
             )
 
     def draw_circle(self, x, y, radius, color="gray"):
         if self.check_max_draw_distance(x, y, radius, radius):
             pygame.draw.circle(
                 self.screen, color,
-                self.to_draw_coordinates(x, y), radius * self.size_tick_scale,
-                width=int(0.01 * self.size_tick_scale) + 1
+                self.to_draw_coordinates(x, y), radius * self.get_current_tick_size(),
+                width=int(0.01 * self.get_current_tick_size()) + 1
             )
 
     def draw_image(self, code, img_type, coordinates, vertical_reverse=False):
@@ -67,7 +57,7 @@ class GameDisplayManager(ImageLoader):
             return
 
         draw_coordinates = DrawConverting.main_to_draw_coordinates(
-            (x, y), self.camera.get_coordinates(), self.size_tick_scale)
+            (x, y), self.camera.get_coordinates(), self.get_current_tick_size())
         img = self.get_image(code, img_type)
         if vertical_reverse:
             img = pygame.transform.flip(img, True, False)
@@ -77,7 +67,4 @@ class GameDisplayManager(ImageLoader):
         self.screen.fill(refresh_color)
 
     def update(self):
-        self.camera.update()
-        self.camera.update_visualization_parameters(
-            self.screen.get_size(), self.size_tick_scale
-        )
+        self.camera.update(self.screen.get_size(), self.get_current_tick_size())

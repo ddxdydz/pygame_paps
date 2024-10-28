@@ -2,7 +2,6 @@ SCENE_AUDIO_PATHS = {
     "lose": ["data", "audio", "sound", "lose.wav"],
     "coin": ["data", "audio", "sound", "coin.wav"],
     "win": ["data", "audio", "sound", "win.wav"],
-    "notification": ["data", "audio", "sound", "notification.wav"],
     "achievement": ["data", "audio", "sound", "achievement.wav"],
     "death": ["data", "audio", "sound", "death_sound.wav"],
     "sceleton_lose": ["data", "audio", "sound", "sceleton_lose.wav"],
@@ -23,7 +22,7 @@ OBJECTS_VISUALISATION = {
     "wall_stone3": {"size": (1, 1), "paths": {"base": ["data", "imgs", "game_imgs", "map", "wall_stone3.png"]}},
     "window": {"size": (2, 8), "paths": {"base": ["data", "imgs", "game_imgs", "map", "window.png"]}},
     "hero": {
-        "code": "pl", "size": (1, 1),
+        "size": (1, 1),
         "paths": {
             "base": ["data", "imgs", "game_imgs", "hero", "attack", "1.png"],
             "attack1": ["data", "imgs", "game_imgs", "hero", "attack", "1.png"],
@@ -57,7 +56,7 @@ OBJECTS_VISUALISATION = {
         }
     },
     "key": {
-        "code": "ky", "size": (0.7, 0.7),
+        "size": (0.7, 0.7),
         "paths": {
             "base": ["data", "imgs", "game_imgs", "map_objects", "key", "key1.png"],
             "1": ["data", "imgs", "game_imgs", "map_objects", "key", "key1.png"],
@@ -66,7 +65,7 @@ OBJECTS_VISUALISATION = {
         }
     },
     "chess": {
-        "code": "ch", "size": (0.7, 0.7),
+        "size": (0.7, 0.7),
         "paths": {
             "base": ["data", "imgs", "game_imgs", "map_objects", "chess", "chess1.png"],
             "1": ["data", "imgs", "game_imgs", "map_objects", "chess", "chess1.png"],
@@ -76,7 +75,7 @@ OBJECTS_VISUALISATION = {
         }
     },
     "vase": {
-        "code": "vs", "size": (0.7, 0.7),
+        "size": (0.7, 0.7),
         "paths": {
             "base": ["data", "imgs", "game_imgs", "map_objects", "vase", "vase1.png"],
             "1": ["data", "imgs", "game_imgs", "map_objects", "vase", "vase1.png"],
@@ -86,7 +85,7 @@ OBJECTS_VISUALISATION = {
         }
     },
     "money": {
-        "code": "mn", "size": (0.7, 0.7),
+        "size": (0.7, 0.7),
         "paths": {
             "base": ["data", "imgs", "game_imgs", "map_objects", "money", "money1.png"],
             "1": ["data", "imgs", "game_imgs", "map_objects", "money", "money1.png"],
@@ -96,7 +95,7 @@ OBJECTS_VISUALISATION = {
         }
     },
     "sceleton": {
-        "code": "sc", "size": (0.7, 0.7),
+        "size": (0.7, 0.7),
         "paths": {
             "attack1": ["data", "imgs", "game_imgs", "skeleton", "attack", "1.png"],
             "attack2": ["data", "imgs", "game_imgs", "skeleton", "attack", "2.png"],

@@ -4,18 +4,20 @@ import pygame
 
 from basic.audio.AudioManager import AudioManager
 from basic.general_game_logic.scene_folder.Scene import Scene
-from basic.general_settings import FPS
+from basic.general_settings import FPS, IMAGE_PATHS
 from basic.general_visualization.general_gui.Messanger import Messanger
 from basic.general_visualization.general_gui.general_gui_elements.FpsBar import FpsBar
+from basic.tools.loading_files import load_image
 
 
 class SceneLoader:
-    def __init__(self, audio_manager: AudioManager()):
+    def __init__(self, audio_manager: AudioManager = AudioManager()):
         self.audio_manager = audio_manager
         self.messanger = Messanger(self.audio_manager)
 
     def load(self, scene: Scene):
         fps_bar = FpsBar()
+        scene.auto_size()
 
         clock = pygame.time.Clock()
 
@@ -35,10 +37,17 @@ class SceneLoader:
                         )
                         if mes_event.type == pygame.KEYDOWN:
                             if mes_event.key == 13:  # enter
-                                self.audio_manager.load_sound("lose")
                                 running = False
                     elif event.key == pygame.K_TAB:
                         fps_bar.change_show()
+                    elif event.key == 13:  # Enter
+                        mods = pygame.key.get_mods()
+                        if mods & pygame.KMOD_ALT:
+                            pygame.display.toggle_fullscreen()
+                            pygame.display.set_icon(load_image(IMAGE_PATHS["icon"]))
+                if event.type == pygame.VIDEORESIZE:
+                    scene.auto_size()
+
                 self.audio_manager.process_event(event)
                 scene.process_event(event)
 

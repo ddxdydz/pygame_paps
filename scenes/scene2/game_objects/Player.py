@@ -2,7 +2,7 @@ import pygame
 
 from basic.general_settings import FPS
 from basic.general_game_logic.base_objects.GameDynamicObject import GameDynamicObject
-from basic.general_game_logic.visualization.GameDisplayManager import GamingDisplayManager
+from basic.general_game_logic.game_visualization.game_process_visualization.GameGraphicManager import GamingDisplayManager
 
 
 class Player(GameDynamicObject):

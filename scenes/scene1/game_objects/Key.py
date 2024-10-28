@@ -1,6 +1,6 @@
 from basic.general_game_logic.base_objects.GameCollidingObject import GameCollidingObject
 from basic.general_game_logic.scene_folder.Scene import Scene
-from basic.general_game_logic.visualization.GameDisplayManager import GameDisplayManager
+from basic.general_game_logic.game_visualization.game_process_visualization.GameGraphicManager import GameGraphicManager
 from basic.general_settings import FPS
 
 
@@ -37,7 +37,7 @@ class Key(GameCollidingObject):
     def update(self):
         self.update_frame()
 
-    def draw(self, display_manager: GameDisplayManager):
+    def draw(self, display_manager: GameGraphicManager):
         display_manager.draw_image(
             "key", Key.frames[self.current_frame_index],
             self.get_coordinates()

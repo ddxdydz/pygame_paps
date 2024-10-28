@@ -1,5 +1,4 @@
-from basic.general_game_logic.visualization.GameDisplayManager import GamingDisplayManager
-from scenes.scene1.game_objects.Wall import Wall
+from basic.general_game_logic.game_visualization.game_process_visualization.GameGraphicManager import GamingDisplayManager
 from scenes.scene2.general.scene_settings import OBJECTS_VISUALISATION
 from scenes.scene2.map.load_borders import load_borders
 

@@ -2,13 +2,12 @@ import pygame
 
 from basic.general_settings import FPS
 from basic.general_settings import ONE_GGUI_TICK_TO_PX
-from basic.general_visualization.ImageLoader import ImageLoader
-from basic.tools.loading_files import load_image
+from basic.general_game_logic.game_visualization.game_process_visualization.support.ImageLoader import ImageLoader
 
 
 class GameGuiManager(ImageLoader):
     def __init__(self):
-        super().__init__(ONE_GGUI_TICK_TO_PX)
+        super().__init__()
 
         self.show_timer = False
         self.show_gui = True

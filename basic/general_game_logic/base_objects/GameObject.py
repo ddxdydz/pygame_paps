@@ -13,7 +13,7 @@ class GameObject:
     def delete(self):
         self.deleted = True
 
-    def set_obj_size(self, size):
+    def set_size(self, size):
         self.size = self.width, self.height = size
 
     def get_obj_size(self):
