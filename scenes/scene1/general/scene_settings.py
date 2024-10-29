@@ -1,3 +1,4 @@
+EMPTY_CODE = "00"  # For maze processing
 SCENE_AUDIO_PATHS = {
     "lose": ["data", "audio", "sound", "lose.wav"],
     "coin": ["data", "audio", "sound", "coin.wav"],

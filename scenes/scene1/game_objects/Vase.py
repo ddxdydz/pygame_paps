@@ -1,6 +1,6 @@
 from basic.general_game_logic.base_objects.GameCollidingObject import GameCollidingObject
+from basic.general_game_logic.game_visualization.GameVisualizer import GameVisualizer
 from basic.general_game_logic.scene_folder.Scene import Scene
-from basic.general_game_logic.game_visualization.game_process_visualization.GameGraphicManager import GameGraphicManager
 from basic.general_settings import FPS
 
 
@@ -53,7 +53,7 @@ class Vase(GameCollidingObject):
         self.update_frame()
         self.check_stages()
 
-    def draw(self, display_manager: GameGraphicManager):
+    def draw(self, display_manager: GameVisualizer):
         display_manager.draw_image(
             "vase", Vase.frames[self.current_stage][self.current_frame_index],
             self.get_coordinates()

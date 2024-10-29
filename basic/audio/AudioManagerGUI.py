@@ -1,6 +1,6 @@
 import pygame
 
-from basic.tools.get_center_drawing_coordinates import get_center_drawing_coordinates
+from basic.tools.screen_placement.get_drawing_center_coordinates import get_drawing_center_coordinates
 from basic.tools.get_dynamic_alpha import get_dynamic_alpha
 
 
@@ -42,7 +42,7 @@ class AudioManagerGUI:
         text_surface = self.get_text_surface(volume, is_pause)
         audio_state_surface = self.get_audio_state_surface()
         audio_state_surface.blit(
-            text_surface, get_center_drawing_coordinates(
+            text_surface, get_drawing_center_coordinates(
                 audio_state_surface, text_surface)
         )
 

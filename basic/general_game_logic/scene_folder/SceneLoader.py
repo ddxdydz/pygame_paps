@@ -3,17 +3,17 @@ import sys
 import pygame
 
 from basic.audio.AudioManager import AudioManager
+from basic.basic_gui.FullScreenMessanger import FullScreenMessanger
+from basic.basic_gui.gui_elements.FpsBar import FpsBar
 from basic.general_game_logic.scene_folder.Scene import Scene
 from basic.general_settings import FPS, IMAGE_PATHS
-from basic.general_visualization.general_gui.Messanger import Messanger
-from basic.general_visualization.general_gui.general_gui_elements.FpsBar import FpsBar
-from basic.tools.loading_files import load_image
+from basic.tools.loading.loading_files import load_image
 
 
 class SceneLoader:
     def __init__(self, audio_manager: AudioManager = AudioManager()):
         self.audio_manager = audio_manager
-        self.messanger = Messanger(self.audio_manager)
+        self.messanger = FullScreenMessanger(self.audio_manager)
 
     def load(self, scene: Scene):
         fps_bar = FpsBar()

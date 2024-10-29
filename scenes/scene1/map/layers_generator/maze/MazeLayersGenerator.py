@@ -1,6 +1,6 @@
 from random import choice, randint
 
-from basic.general_settings import EMPTY_CODE
+from scenes.scene1.general.scene_settings import EMPTY_CODE
 from scenes.scene1.map.layers_generator.maze.MazeGenerator import MazeGenerator, WALL, EMPTY
 
 
@@ -37,7 +37,8 @@ class MazeLayersGenerator:
                     result[row].append(choice(self.floor_codes))
         return result
 
-    def get_free_cells(self, maze):
+    @staticmethod
+    def get_free_cells(maze):
         free_cells = []
         for row in range(len(maze)):
             for col in range(len(maze[0])):

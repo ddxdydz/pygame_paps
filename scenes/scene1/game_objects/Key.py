@@ -1,6 +1,6 @@
 from basic.general_game_logic.base_objects.GameCollidingObject import GameCollidingObject
+from basic.general_game_logic.game_visualization.GameVisualizer import GameVisualizer
 from basic.general_game_logic.scene_folder.Scene import Scene
-from basic.general_game_logic.game_visualization.game_process_visualization.GameGraphicManager import GameGraphicManager
 from basic.general_settings import FPS
 
 
@@ -26,7 +26,7 @@ class Key(GameCollidingObject):
         if not self.is_collected:
             if self.check_collision(self.target_object):
                 self.parent_scene.get_audio_manager().load_sound("achievement")
-                self.open()
+                # self.open()
 
     def update_frame(self):
         self.current_time -= 1 / FPS
@@ -37,7 +37,7 @@ class Key(GameCollidingObject):
     def update(self):
         self.update_frame()
 
-    def draw(self, display_manager: GameGraphicManager):
+    def draw(self, display_manager: GameVisualizer):
         display_manager.draw_image(
             "key", Key.frames[self.current_frame_index],
             self.get_coordinates()

@@ -1,7 +1,7 @@
 import pygame
 
 from basic.audio.AudioManagerGUI import AudioManagerGUI
-from basic.tools.loading_files import join_path
+from basic.tools.loading.loading_files import join_path
 
 
 class AudioManager(AudioManagerGUI):

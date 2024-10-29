@@ -3,10 +3,10 @@ import pygame
 import pygame_gui
 from pygame import RESIZABLE
 
+from basic.basic_gui.MenuGUI import MenuGUI
 from basic.general_settings import DEFAULT_WINDOW_SIZE, FPS
 from basic.general_settings import IMAGE_PATHS, AUDIO_PATHS
-from basic.tools.loading_files import load_image
-from basic.general_visualization.general_gui.MenuGUI import MenuGUI
+from basic.tools.loading.loading_files import load_image
 from basic.general_game_logic.scene_folder.SceneLoader import SceneLoader
 from basic.audio.AudioManager import AudioManager
 from scenes.scene1.Scene1 import Scene1

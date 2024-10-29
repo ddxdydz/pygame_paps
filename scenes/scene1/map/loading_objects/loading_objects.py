@@ -1,13 +1,12 @@
 from basic.general_game_logic.base_objects.GameObject import GameObject
 from basic.general_game_logic.scene_folder.Scene import Scene
-from basic.general_settings import EMPTY_CODE
 from scenes.scene1.game_objects.Chess import Chess
 from scenes.scene1.game_objects.Key import Key
 from scenes.scene1.game_objects.Money import Money
 from scenes.scene1.game_objects.Player import Player
 from scenes.scene1.game_objects.Sceleton import Sceleton
 from scenes.scene1.game_objects.Vase import Vase
-from scenes.scene1.general.scene_settings import OBJECTS_VISUALISATION
+from scenes.scene1.general.scene_settings import OBJECTS_VISUALISATION, EMPTY_CODE
 
 class_map = {
     "chess": Chess,

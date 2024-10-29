@@ -1,4 +1,4 @@
-from basic.tools.loading_files import join_path
+from basic.tools.loading.loading_files import join_path
 from scenes.scene1.game_objects.Wall import Wall
 from scenes.scene2.general.scene_settings import OTHER_PATHS, MAP_SIZE_IN_PX
 

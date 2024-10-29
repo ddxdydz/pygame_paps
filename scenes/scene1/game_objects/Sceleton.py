@@ -1,8 +1,8 @@
 from basic.general_game_logic.base_objects.GameDynamicObject import GameDynamicObject
 from basic.general_game_logic.base_objects.GameObject import GameObject
 from basic.general_game_logic.dynamic.damage_system.DamageArea import DamageArea
+from basic.general_game_logic.game_visualization.GameVisualizer import GameVisualizer
 from basic.general_game_logic.scene_folder.Scene import Scene
-from basic.general_game_logic.game_visualization.game_process_visualization.GameGraphicManager import GameGraphicManager
 from basic.general_settings import FPS
 from scenes.scene1.map.layers_generator.get_scheme_coordinates import get_scheme_coordinates
 from scenes.scene1.map.layers_generator.maze.maze_solver import bfs
@@ -211,21 +211,21 @@ class Sceleton(GameDynamicObject):
         self.update_stages()
         self.update_frame()
 
-    def draw(self, display_manager: GameGraphicManager):
+    def draw(self, display_manager: GameVisualizer):
         display_manager.draw_image(
             "sceleton", Sceleton.frames[self.current_stage][self.current_frame_index],
             self.get_coordinates(),
             self.vertical_reverse
         )
 
-    def draw_attention_zone(self, display_manager: GameGraphicManager):
+    def draw_attention_zone(self, display_manager: GameVisualizer):
         if not self.is_alert:
             display_manager.draw_circle(
                 *self.get_centre_coordinates(),
                 self.alert_distance,
             )
 
-    def draw_attack_zone(self, display_manager: GameGraphicManager):
+    def draw_attack_zone(self, display_manager: GameVisualizer):
         display_manager.draw_circle(
             *self.get_centre_coordinates(),
             self.current_attack_distance,
