@@ -14,9 +14,9 @@ class SceneLoader:
     def __init__(self, audio_manager: AudioManager = AudioManager()):
         self.audio_manager = audio_manager
         self.messanger = FullScreenMessanger(self.audio_manager)
+        self.fps_bar = FpsBar()
 
     def load(self, scene: Scene):
-        fps_bar = FpsBar()
         scene.auto_size()
 
         clock = pygame.time.Clock()
@@ -39,7 +39,7 @@ class SceneLoader:
                             if mes_event.key == 13:  # enter
                                 running = False
                     elif event.key == pygame.K_TAB:
-                        fps_bar.change_show()
+                        self.fps_bar.change_show()
                     elif event.key == 13:  # Enter
                         mods = pygame.key.get_mods()
                         if mods & pygame.KMOD_ALT:
@@ -56,7 +56,7 @@ class SceneLoader:
             if scene.is_over:
                 running = False
 
-            fps_bar.show_fps(scene.get_screen(), int(clock.get_fps()))
+            self.fps_bar.show_fps(scene.get_screen(), int(clock.get_fps()))
 
             self.audio_manager.update(FPS)
             self.audio_manager.draw_ui(scene.get_screen())

@@ -1,6 +1,6 @@
 from basic.general_game_logic.base_objects.GameObject import GameObject
-from basic.general_game_logic.collisions.rectangle_collision.CollisionChecker import CollisionChecker
-from basic.general_game_logic.collisions.rectangle_collision.CollisionRect import CollisionRect
+from basic.general_game_logic.collision_system.rectangle_collision.CollisionRectChecker import CollisionRectChecker
+from basic.general_game_logic.collision_system.rectangle_collision.CollisionRect import CollisionRect
 from basic.general_game_logic.game_visualization.GameVisualizer import GameVisualizer
 
 
@@ -23,7 +23,7 @@ class GameCollidingObject(GameObject):
 
     def check_collision(self, obj):
         if isinstance(obj, GameCollidingObject):
-            return CollisionChecker.check_collision(
+            return CollisionRectChecker.check_collision(
                 self.get_collision_rect_coordinates(),
                 obj.get_collision_rect_coordinates()
             )
@@ -36,7 +36,7 @@ class GameCollidingObject(GameObject):
                     result.append(obj)
         return result
 
-    def draw_collision(self, display_manager: GameVisualizer):
+    def draw_collision(self, game_visualizer: GameVisualizer):
         left_upper_x, left_upper_y = self.get_collision_rect_coordinates()[0]
         size = self.get_collision_rect().get_rect_size()
-        display_manager.draw_rect(left_upper_x, left_upper_y, *size)
+        game_visualizer.draw_rect(left_upper_x, left_upper_y, *size)

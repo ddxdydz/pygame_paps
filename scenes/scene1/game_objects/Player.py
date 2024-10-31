@@ -1,104 +1,58 @@
 import pygame
 
-from basic.general_game_logic.base_objects.GameDynamicObject import GameDynamicObject
-from basic.general_game_logic.dynamic.damage_system.DamageArea import DamageArea
+from basic.general_game_logic.base_objects.GameAnimatedObject import GameAnimatedObject
+from basic.general_game_logic.base_objects.GameCombatObject import GameCombatObject
+from basic.general_game_logic.collision_system.rectangle_collision.CollisionRect import CollisionRect
+from basic.general_game_logic.dynamic.combat_system.Stamina import Stamina
 from basic.general_game_logic.game_visualization.GameVisualizer import GameVisualizer
 from basic.general_game_logic.scene_folder.Scene import Scene
-from basic.general_settings import FPS
+from scenes.scene1.general.scene_settings import PLAYER_ANIMATION
 
 
-class Player(GameDynamicObject):
-    ATTACK, STAY, DEAD, DEATH, WALK, RUN, HIT = "attack", "stay", "dead", "death", "walk", "run", "hit"
-    frames = {
-        ATTACK: ["attack1", "attack2", "attack3", "attack4", "attack5", "attack4", "attack3", "attack2"],
-        STAY: ["attack1"],
-        DEAD: ["dead1", "dead2", "dead3", "dead4", "dead5", "dead6"],
-        DEATH: ["dead6"],
-        WALK: ["walk1", "walk2", "walk3", "walk4", "walk5"],
-        RUN: ["run1", "run2", "run3", "run4", "run5", "run6", "run7"],
-        HIT: ["hit1", "hit2", "hit1"]
-    }
-    frames_per_second = {
-        ATTACK: 12,
-        STAY: 5,
-        DEAD: 5,
-        DEATH: 5,
-        WALK: 5,
-        RUN: 5,
-        HIT: 3
-    }
-    long_term_stages = (ATTACK, DEAD, HIT)
+class Player(GameCombatObject, GameAnimatedObject):
+    ATTACK, STAY, DEAD, DEATH, WALK, RUN, HIT = PLAYER_ANIMATION.keys()
 
     def __init__(self, coordinates, size, parent_scene: Scene):
         super().__init__(coordinates, size)
+        GameAnimatedObject.__init__(self, Player.STAY, PLAYER_ANIMATION)
         self.parent_scene = parent_scene
         self.create_collision_rect(0.35, -0.3, 0.3, 0.6)
-        self.audio_manager = None
-        self.game_gui_manager = None
-        self.current_stage = Player.STAY
         self.enable_updating = True
+        self.vertical_reverse = False
 
-        # Characteristics
+        # Moving speed
         self.move_step = 0.02
         self.run_step = 0.05
-        self.max_stamina = 100
-        self.current_stamina = 100
-        self.decrease_stamina_speed = 20  # per second
-        self.increase_stamina_speed = 10  # per second
-        self.min_running_stamina_level = 20
-        self.infinity_stamina = False
 
-        self.attack_delay = 0.9  # sec
-        self.current_attack_delay = 0
+        # Stamina
+        self.stamina_keeper = Stamina()
+        self.stamina_keeper.set_parameters(100, 100)
 
-        self.damage_area = DamageArea((0, 0), rect=(0.1, -0.3, 0.8, 0.6))
-        self.damage = 20
-        self.max_health = 100
-        self.current_health = 100
-        self.infinity_health = False
+        # Combat Parameters
+        self.set_damage_parameters(CollisionRect(0.1, -0.3, 0.8, 0.6), 20)
+        self.set_health_parameters(100, 100)
 
-        # Animated
-        self.vertical_reverse = False
-        self.current_time = 0
-        self.current_frame_index = 0
-        self.stage_updating_delay = 0  # frames
+    def take_hit(self, damage):
+        if self.health_keeper.health == 0:
+            return
+        self.health_keeper.take_damage(damage)
+        self.parent_scene.get_scene_gui_manager().show_message(
+            f"- Вы получили урон: {damage}. Текущее количество hp: {self.health_keeper.health}"
+        )
+        self.parent_scene.get_audio_manager().load_sound("hero_hit")
+        self.change_stage(Player.HIT)
 
-    def set_audio_manager(self, audio_manager):
-        self.audio_manager = audio_manager
+    def check_death(self):
+        if not self.health_keeper.is_died():
+            return
+        self.parent_scene.get_audio_manager().load_sound("death")
+        self.change_stage(Player.DEAD)
+        self.enable_updating = False
 
-    def load_sound_safety(self, sound_name):
-        if self.audio_manager is not None:
-            self.audio_manager.load_sound(sound_name)
-
-    def set_game_gui_manager(self, game_gui_manager):
-        self.game_gui_manager = game_gui_manager
-
-    def show_message_safety(self, message):
-        if self.game_gui_manager is not None:
-            self.game_gui_manager.show_message(message)
-
-    def update_frame(self):
-        self.current_time -= 1 / FPS
-        if self.current_time < 0:
-            self.current_time = 1 / Player.frames_per_second[self.current_stage]  # sec
-            self.current_frame_index += 1
-            if self.stage_updating_delay > 0:
-                self.stage_updating_delay -= 1
-        self.current_frame_index %= len(Player.frames[self.current_stage])
-
-    def update_stamina(self):
-        if self.current_stamina < 0:
-            self.current_stamina = 0
-        self.current_stamina += self.increase_stamina_speed / FPS
-        if self.current_stamina > self.max_stamina:
-            self.current_stamina = self.max_stamina
-
-    def process_running(self):
+    def process_running(self) -> bool:
         is_running = False
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_LSHIFT] and (
-                self.current_stamina > self.min_running_stamina_level or self.infinity_stamina
-        ):
+        if keys[pygame.K_LSHIFT] and self.stamina_keeper.current_stamina > 0:
             if keys[pygame.K_w]:
                 self.move(0, self.run_step)
                 is_running = True
@@ -115,7 +69,7 @@ class Player(GameDynamicObject):
                 self.vertical_reverse = False
         return is_running
 
-    def process_walking(self):
+    def process_walking(self) -> bool:
         keys = pygame.key.get_pressed()
         is_walking = False
         if keys[pygame.K_w]:
@@ -134,84 +88,50 @@ class Player(GameDynamicObject):
             self.vertical_reverse = False
         return is_walking
 
-    def process_attacking(self):
+    def process_attacking(self) -> bool:
         keys = pygame.key.get_pressed()
         is_attacking = False
-        if keys[pygame.K_e] and self.current_attack_delay == 0:
-            self.current_attack_delay = self.attack_delay
-            is_attacking = True
+        if keys[pygame.K_e]:
+            if self.current_stage != Player.ATTACK:
+                is_attacking = True
         return is_attacking
 
-    def process_getting_damage(self, damage):
-        self.decrease_health(damage)
-        if self.current_stage != Player.DEAD:
-            self.current_stage = Player.HIT
-            self.set_stage_updating_delay()
-            self.game_gui_manager.show_message(
-                f"- Вы получили дамаг: {damage}. Текущее количество hp: {self.current_health}"
-            )
-            self.audio_manager.load_sound("hero_hit")
-
-    def check_death(self):
-        if self.current_health <= 0 and not self.infinity_health:
-            self.load_sound_safety("death")
-            self.current_stage = Player.DEAD
-            self.set_stage_updating_delay()
-            self.parent_scene.player_enable_updating = False
-
     def process_controller(self):
-        self.current_attack_delay -= 1 / FPS
-        if self.current_attack_delay < 0:
-            self.current_attack_delay = 0
-
         if self.current_stage == Player.HIT:
+            return
+        if not self.enable_updating:
             return
 
         is_walking = self.process_walking()
         is_running = self.process_running()
         is_attacking = self.process_attacking()
 
-        self.update_stages(Player.STAY)
-        if is_walking:
-            self.update_stages(Player.WALK)
         if is_running:
-            self.update_stages(Player.RUN)
-            self.current_stamina -= self.decrease_stamina_speed / FPS
-            if self.current_stamina < self.min_running_stamina_level:
-                self.current_stamina = 0
+            self.change_stage(Player.RUN)
+            self.stamina_keeper.decrease()
+        elif is_walking:
+            self.change_stage(Player.WALK)
+        else:
+            self.change_stage(Player.STAY)
+
         if is_attacking:
-            self.update_stages(Player.ATTACK)
+            self.change_stage(Player.ATTACK)
 
-    def set_stage_updating_delay(self):
-        if self.current_stage in Player.long_term_stages:
-            self.current_frame_index = 0
-            self.stage_updating_delay = len(Player.frames[self.current_stage]) - 1
-
-    def update_stages(self, new_stage=None):
-        if not self.stage_updating_delay:
-            if self.current_stage == Player.DEAD:
-                self.current_stage = Player.DEATH
-            elif self.current_stage == Player.ATTACK:
-                self.current_stage = Player.STAY
-                self.do_damage()
-            elif self.current_stage == Player.HIT:
-                self.current_stage = Player.STAY
-            elif new_stage is not None:
-                self.current_stage = new_stage
-                if self.current_stage in Player.long_term_stages:
-                    self.set_stage_updating_delay()
+    def process_last_frame(self):
+        if self.check_stage_end(Player.ATTACK):
+            self.attack()
+        if self.check_stage_end(Player.HIT):
+            self.check_death()
 
     def update(self):
-        if self.parent_scene.player_enable_updating:
-            self.process_controller()
-            self.update_stamina()
-            self.check_death()
-        self.update_stages()
+        if self.enable_updating:
+            self.stamina_keeper.update()
         self.update_frame()
+        self.process_last_frame()
 
-    def draw(self, display_manager: GameVisualizer):
-        display_manager.draw_image(
-            "hero", Player.frames[self.current_stage][self.current_frame_index],
+    def draw(self, game_visualizer: GameVisualizer):
+        game_visualizer.draw_image(
+            "hero", self.get_frame_code(),
             self.get_coordinates(),
             self.vertical_reverse
         )

@@ -37,7 +37,8 @@ class MenuGUI:
         self.menu_background = load_image(IMAGE_PATHS["menu_background"])
 
         self.main_menu_messanger = FullScreenMessanger()
-        self.main_menu_messanger.background_screen_color = pygame.Color(20, 20, 20, 255)
+        self.main_menu_messanger.background_screen_color = pygame.Color(20, 20, 20)
+        self.main_menu_messanger.default_visible = 255
 
     def show_rules(self, screen, rules):
         self.main_menu_messanger.show_message(screen, rules)

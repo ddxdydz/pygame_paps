@@ -22,6 +22,14 @@ class Money(GameCollidingObject):
         self.current_time = 0
         self.current_frame_index = 0
 
+    def collect(self):
+        self.parent_scene.get_audio_manager().load_sound("coin")
+        self.parent_scene.get_scene_gui_manager().items_panel.add_item("money")
+        self.delete()
+        self.parent_scene.get_scene_gui_manager().show_message(
+            f"- Вы подобрали монету."
+        )
+
     def update_frame(self):
         self.current_time -= 1 / FPS
         if self.current_time < 0:
@@ -31,8 +39,8 @@ class Money(GameCollidingObject):
     def update(self):
         self.update_frame()
 
-    def draw(self, display_manager: GameVisualizer):
-        display_manager.draw_image(
+    def draw(self, game_visualizer: GameVisualizer):
+        game_visualizer.draw_image(
             "money", Money.frames[self.current_frame_index],
             self.get_coordinates()
         )

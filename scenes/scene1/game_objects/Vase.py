@@ -34,6 +34,9 @@ class Vase(GameCollidingObject):
             self.current_stage = Vase.OPENING
             self.current_time = self.change_frame_time
             self.current_frame_index = 0
+            self.parent_scene.get_audio_manager().load_sound("coin")
+            self.parent_scene.get_scene_gui_manager().items_panel.add_item("vase")
+            self.parent_scene.get_scene_gui_manager().show_message(f"- Вы подобрали вазу.")
 
     def check_stages(self):
         if self.current_stage == Vase.OPENING:
@@ -53,8 +56,8 @@ class Vase(GameCollidingObject):
         self.update_frame()
         self.check_stages()
 
-    def draw(self, display_manager: GameVisualizer):
-        display_manager.draw_image(
+    def draw(self, game_visualizer: GameVisualizer):
+        game_visualizer.draw_image(
             "vase", Vase.frames[self.current_stage][self.current_frame_index],
             self.get_coordinates()
         )

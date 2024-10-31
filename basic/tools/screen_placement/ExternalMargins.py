@@ -11,28 +11,32 @@ class ExternalMargins:
     margin value = 0 => center placement
     """
     def __init__(self, margin_x=0, margin_y=0):
+        if abs(margin_x) > 1:
+            raise Exception("ExternalMargins Error: abs(margin_x) > 1")
+        if abs(margin_y) > 1:
+            raise Exception("ExternalMargins Error: abs(margin_y) > 1")
         self.margin_x = margin_x
         self.margin_y = margin_y
 
     @staticmethod
     def get_drawing_x_by_left_padding(margin_x, parent_surface_width: int) -> int:
-        padding_px = parent_surface_width * abs(margin_x) / 100
-        return int(padding_px)
+        indent = parent_surface_width * abs(margin_x)
+        return int(indent)
 
     @staticmethod
     def get_drawing_x_by_right_padding(margin_x, parent_surface_width: int, child_surface_width: int) -> int:
-        padding_px = parent_surface_width * abs(margin_x) / 100
-        return int(parent_surface_width - child_surface_width - padding_px)
+        indent = parent_surface_width * abs(margin_x)
+        return int(parent_surface_width - child_surface_width - indent)
 
     @staticmethod
     def get_drawing_y_by_upper_padding(margin_y, parent_surface_height: int) -> int:
-        padding_px = parent_surface_height * abs(margin_y) / 100
-        return int(padding_px)
+        indent = parent_surface_height * abs(margin_y)
+        return int(indent)
 
     @staticmethod
     def get_drawing_y_by_down_padding(margin_y, parent_surface_height: int, child_surface_height: int) -> int:
-        padding_px = parent_surface_height * abs(margin_y) / 100
-        return int(parent_surface_height - child_surface_height - padding_px)
+        indent = parent_surface_height * abs(margin_y)
+        return int(parent_surface_height - child_surface_height - indent)
 
     def get_drawing_coordinates(self, parent_surface: pygame.Surface, child_surface: pygame.Surface) -> tuple[int, int]:
         x, y = get_drawing_center_coordinates(parent_surface, child_surface)

@@ -35,12 +35,6 @@ class Chess(GameCollidingObject):
             self.current_time = self.change_frame_time
             self.current_frame_index = 0
 
-    def check_target_object_collision(self):
-        if self.parent_scene.current_player_statistic["key_count"] == 1 and self.current_stage == Chess.CLOSED:
-            if self.check_collision(self.target_object):
-                self.parent_scene.get_audio_manager().load_sound("achievement")
-                self.open()
-
     def check_stages(self):
         if self.current_stage == Chess.OPENING:
             if self.current_frame_index == 3:
@@ -57,10 +51,9 @@ class Chess(GameCollidingObject):
     def update(self):
         self.update_frame()
         self.check_stages()
-        self.check_target_object_collision()
 
-    def draw(self, display_manager: GameVisualizer):
-        display_manager.draw_image(
+    def draw(self, game_visualizer: GameVisualizer):
+        game_visualizer.draw_image(
             "chess", Chess.frames[self.current_stage][self.current_frame_index],
             self.get_coordinates()
         )

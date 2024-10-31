@@ -13,7 +13,8 @@ class FullScreenMessanger:
         self.audio_manager = audio_manager
         self.end_key_code = None
 
-        self.background_screen_color = pygame.Color(20, 20, 20, 200)
+        self.background_screen_color = pygame.Color(20, 20, 20)
+        self.default_visible = 200
 
         self.main_text_color = (235, 235, 235, 255)
         self.main_text_font_size_coefficient = 1 / 22
@@ -42,9 +43,10 @@ class FullScreenMessanger:
     def get_message_background(self, screen: pygame.Surface) -> pygame.Surface:
         background = pygame.Surface(screen.get_size()).convert_alpha()
         background.fill(self.background_screen_color)
+        background.set_alpha(self.default_visible)
         return background
 
-    def draw_message(self, screen: pygame.Surface):
+    def draw_message(self, screen: pygame.Surface, default_background: pygame.Surface):
         main_text = self.get_main_text(screen)
         annotation_text = self.get_annotation_text(screen)
 
@@ -52,13 +54,18 @@ class FullScreenMessanger:
         annotation_text_x, _ = get_drawing_center_coordinates(screen, annotation_text)
         annotation_text_y = main_text_y + main_text.get_height() + 2 * annotation_text.get_height()
 
-        screen.blit(self.get_message_background(screen), (0, 0))
-        screen.blit(main_text, (main_text_x, main_text_y))
-        screen.blit(annotation_text, (annotation_text_x, annotation_text_y))
+        default_background.blit(self.get_message_background(screen), (0, 0))
+        default_background.blit(main_text, (main_text_x, main_text_y))
+        default_background.blit(annotation_text, (annotation_text_x, annotation_text_y))
+        screen.blit(default_background)
 
     def enable_messanger_loop(self, screen: pygame.Surface):
         running = True
         clock = pygame.time.Clock()
+
+        default_screen = pygame.Surface(screen.get_size())
+        default_screen.blit(screen)
+
         while running:
             for event in pygame.event.get().copy():
                 if event.type == pygame.QUIT:
@@ -77,7 +84,9 @@ class FullScreenMessanger:
                             pygame.display.toggle_fullscreen()
                             pygame.display.set_icon(load_image(IMAGE_PATHS["icon"]))
 
-            self.draw_message(screen)
+            default_background = pygame.Surface(screen.get_size())
+            default_background.blit(default_screen)
+            self.draw_message(screen, default_background)
 
             if self.audio_manager is not None:
                 self.audio_manager.update(FPS)

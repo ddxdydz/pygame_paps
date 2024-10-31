@@ -32,13 +32,8 @@ class Scene1(SceneDebug):
         self.enemy.set_target_object(self.player)
         self.enemy.set_map_collision_scheme(self.map.collision_scheme)
 
-        self.player.set_audio_manager(self.audio_manager)
-        self.player.set_game_gui_manager(self.scene_gui_manager)
-        self.enemy.set_audio_manager(self.audio_manager)
-        self.enemy.set_game_gui_manager(self.scene_gui_manager)
-
-        self.player.add_damage_processing_object(self.enemy)
-        self.enemy.add_damage_processing_object(self.player)
+        self.player.set_targets_to_attack([self.enemy])
+        self.enemy.set_targets_to_attack([self.player])
 
         self.player.add_hard_objects(self.map.walls)
         self.enemy.add_hard_objects(self.map.walls)
@@ -49,12 +44,21 @@ class Scene1(SceneDebug):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_i:
                 self.player.set_collision_mode(not self.player.is_no_collision_mode())
+                self.scene_gui_manager.show_message(
+                    f"- no_collision_mode = {self.player.no_collision_mode}"
+                )
             elif event.key == pygame.K_y:
-                self.player.infinity_stamina = not self.player.infinity_stamina
+                self.player.stamina_keeper.switch_decrease_prohibition()
+                self.scene_gui_manager.show_message(
+                    f"- stamina: decrease_prohibition = {self.player.stamina_keeper.decrease_prohibition}"
+                )
             elif event.key == pygame.K_u:
-                self.player.infinity_health = not self.player.infinity_health
+                self.player.health_keeper.switch_decrease_prohibition()
+                self.scene_gui_manager.show_message(
+                    f"- health: decrease_prohibition = {self.player.health_keeper.decrease_prohibition}"
+                )
             elif event.key == pygame.K_j:
-                self.player.current_health = -1
+                self.player.take_hit(damage=100000)
             elif event.key == pygame.K_t:
                 pass
         self.process_debug_event(event)
@@ -63,25 +67,14 @@ class Scene1(SceneDebug):
         for game_object in self.map.others:
             if self.player.check_collision(game_object):
                 if isinstance(game_object, Money):
-                    self.audio_manager.load_sound("coin")
-                    game_object.delete()
                     self.current_player_statistic["money_count"] += 1
-                    self.scene_gui_manager.items_panel.add_item("money")
-                    self.scene_gui_manager.show_message(
-                        f"- Вы подобрали монету. Текущее количество: {self.current_player_statistic["money_count"]}")
-                elif isinstance(game_object, Key):
-                    self.audio_manager.load_sound("achievement")
-                    game_object.delete()
-                    self.current_player_statistic["key_count"] += 1
-                    self.scene_gui_manager.items_panel.add_item("key")
-                    self.scene_gui_manager.show_message(f"- Вы подобрали ключ. Найдите сундук для ключа")
-                elif isinstance(game_object, Vase) and game_object.current_stage == Vase.CLOSED:
-                    self.audio_manager.load_sound("coin")
                     game_object.collect()
+                elif isinstance(game_object, Key):
+                    self.current_player_statistic["key_count"] += 1
+                    game_object.collect()
+                elif isinstance(game_object, Vase) and game_object.current_stage == Vase.CLOSED:
                     self.current_player_statistic["vase_count"] += 1
-                    self.scene_gui_manager.items_panel.add_item("vase")
-                    self.scene_gui_manager.show_message(
-                        f"- Вы подобрали вазу. Текущее количество: {self.current_player_statistic["vase_count"]}")
+                    game_object.collect()
                 elif (isinstance(game_object, Chess) and self.current_player_statistic["key_count"] == 1 and
                       game_object.current_stage == Chess.CLOSED):
                     self.audio_manager.load_sound("achievement")
@@ -91,7 +84,7 @@ class Scene1(SceneDebug):
         for obj in self.map.others:
             if isinstance(obj, Chess):
                 if obj.current_stage == Chess.OPENED:
-                    self.audio_manager.to_pause()
+                    self.audio_manager.unload_music()
                     self.audio_manager.load_sound("win")
                     self.messanger.show_message(
                         self.game_visualizer.screen,
@@ -104,7 +97,7 @@ class Scene1(SceneDebug):
 
     def check_lose(self):
         if self.player.current_stage == Player.DEATH:
-            self.audio_manager.to_pause()
+            self.audio_manager.unload_music()
             self.audio_manager.load_sound("lose")
             self.messanger.show_message(
                 self.game_visualizer.screen,
@@ -119,9 +112,14 @@ class Scene1(SceneDebug):
         self.map.update()
         self.enemy.update()
         self.player.update()
+        self.enemy.process_controller()
+        if not self.get_game_visualizer().camera.is_free:
+            self.player.process_controller()
         self.game_visualizer.update()
-        self.scene_gui_manager.health_bar.update_health_bar(self.player.current_health, self.player.max_health)
-        self.scene_gui_manager.stamina_bar.update_stamina_bar(self.player.current_stamina, self.player.max_stamina)
+        self.scene_gui_manager.health_bar.update_health_bar(
+            self.player.health_keeper.health, self.player.health_keeper.max_health)
+        self.scene_gui_manager.stamina_bar.update_stamina_bar(
+            self.player.stamina_keeper.current_stamina, self.player.stamina_keeper.max_stamina)
         self.scene_gui_manager.update()
         self.check_player_collisions()
         self.check_win()
@@ -139,6 +137,8 @@ class Scene1(SceneDebug):
 
         if self.show_debug_info:
             self.draw_debug_info()
+        if self.show_grid:
+            self.draw_grid()
 
         self.scene_gui_manager.draw()
 

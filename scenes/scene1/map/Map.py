@@ -76,17 +76,17 @@ class Map:
     def update(self):
         self.clear_deleted_objects()
 
-    def draw(self, display_manager: GameVisualizer):
+    def draw(self, game_visualizer: GameVisualizer):
         for row in range(self.height):
             for col in range(self.width):
-                display_manager.draw_image(self.layer0[row][col], "base", (col, row))
+                game_visualizer.draw_image(self.layer0[row][col], "base", (col, row))
 
-    def draw_collisions(self, display_manager: GameVisualizer):
+    def draw_collisions(self, game_visualizer: GameVisualizer):
         for cells_row in self.wall_scheme:
             for cell in cells_row:
                 if isinstance(cell, Wall):
-                    cell.draw_collision(display_manager)
+                    cell.draw_collision(game_visualizer)
 
-    def draw_near_collisions(self, display_manager: GameVisualizer, coordinates):
+    def draw_near_collisions(self, game_visualizer: GameVisualizer, coordinates):
         for wall in self.get_near_walls(coordinates):
-            wall.draw_collision(display_manager)
+            wall.draw_collision(game_visualizer)

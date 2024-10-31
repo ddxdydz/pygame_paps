@@ -19,8 +19,6 @@ class Scene:
 
         self.is_over = False
 
-        self.player_enable_updating = True
-
     def get_rules(self):
         return self.rules
 
@@ -34,6 +32,9 @@ class Scene:
 
     def get_audio_manager(self):
         return self.audio_manager
+
+    def set_scene_gui_manager(self, scene_gui_manager: GuiManagerScene):
+        self.scene_gui_manager = scene_gui_manager
 
     def get_scene_gui_manager(self):
         return self.scene_gui_manager

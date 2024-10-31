@@ -33,6 +33,10 @@ class AudioManager(AudioManagerGUI):
         if self.is_loaded_name(sound_name):
             pygame.mixer.Channel(1).play(pygame.mixer.Sound(self.loaded_audio[sound_name]))
 
+    @staticmethod
+    def unload_music():
+        pygame.mixer.music.unload()
+
     def to_pause(self):
         self.pause = not self.pause
         if self.pause:

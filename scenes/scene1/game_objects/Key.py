@@ -22,11 +22,13 @@ class Key(GameCollidingObject):
         self.current_time = 0
         self.current_frame_index = 0
 
-    def check_target_object_collision(self):
-        if not self.is_collected:
-            if self.check_collision(self.target_object):
-                self.parent_scene.get_audio_manager().load_sound("achievement")
-                # self.open()
+    def collect(self):
+        self.parent_scene.get_audio_manager().load_sound("achievement")
+        self.parent_scene.get_scene_gui_manager().items_panel.add_item("key")
+        self.delete()
+        self.parent_scene.get_scene_gui_manager().show_message(
+            f"- Вы подобрали ключ. Найдите сундук для ключа"
+        )
 
     def update_frame(self):
         self.current_time -= 1 / FPS
@@ -37,8 +39,8 @@ class Key(GameCollidingObject):
     def update(self):
         self.update_frame()
 
-    def draw(self, display_manager: GameVisualizer):
-        display_manager.draw_image(
+    def draw(self, game_visualizer: GameVisualizer):
+        game_visualizer.draw_image(
             "key", Key.frames[self.current_frame_index],
             self.get_coordinates()
         )

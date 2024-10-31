@@ -1,4 +1,5 @@
 DEFAULT_WINDOW_SIZE = DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT = 1300, 800
+SCREEN_RESIZEABLE = True
 FPS = 60
 
 DEFAULT_TICK_SIZE = 140  # ONE TICK TO PX
@@ -28,6 +29,8 @@ Scene debugger hot keys:
     -               decrease tick size
     o	enable free camera
     v	show gui
+    g   show grid
+    r   auto size
     p	show debug info
     m	send message with size
 """

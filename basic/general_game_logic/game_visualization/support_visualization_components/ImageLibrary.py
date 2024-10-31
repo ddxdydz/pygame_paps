@@ -47,9 +47,6 @@ class ImageLibrary:
     def get_image_size(self, code):
         return self.loaded_images[code]["size"]
 
-    def get_image_tick_size(self):
-        return self.loaded_images["one_tick_to_px"]
-
     def get_image(self, code, img_type):
 
         if not self.check_image_code(code):

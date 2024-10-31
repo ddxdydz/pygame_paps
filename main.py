@@ -1,7 +1,6 @@
 import sys
 import pygame
 import pygame_gui
-from pygame import RESIZABLE
 
 from basic.basic_gui.MenuGUI import MenuGUI
 from basic.general_settings import DEFAULT_WINDOW_SIZE, FPS
@@ -10,6 +9,7 @@ from basic.tools.loading.loading_files import load_image
 from basic.general_game_logic.scene_folder.SceneLoader import SceneLoader
 from basic.audio.AudioManager import AudioManager
 from scenes.scene1.Scene1 import Scene1
+from scenes.scene2.Scene2 import Scene2
 
 
 def main():
@@ -19,7 +19,7 @@ def main():
     audio_manager.load_music("menu")
 
     scene_loader = SceneLoader(audio_manager)
-    scene = Scene1
+    scene = Scene2
 
     clock = pygame.time.Clock()
 
@@ -32,6 +32,7 @@ def main():
             elif event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == menu_gui.buttons["start"]:
                     audio_manager.load_music("game")
+                    scene_loader.fps_bar.switch_show()
                     scene_loader.load(scene(screen, audio_manager))
                     audio_manager.load_music("menu")
                 elif event.ui_element == menu_gui.buttons["rules"]:
@@ -63,5 +64,5 @@ if __name__ == "__main__":
     pygame.init()
     pygame.display.set_caption("TestGame")
     pygame.display.set_icon(load_image(IMAGE_PATHS["icon"]))
-    screen = pygame.display.set_mode(DEFAULT_WINDOW_SIZE, RESIZABLE)
+    screen = pygame.display.set_mode(DEFAULT_WINDOW_SIZE, pygame.RESIZABLE)
     main()
