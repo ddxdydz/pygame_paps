@@ -4,6 +4,7 @@ from basic.general_game_logic.base_objects.GameAnimatedObject import GameAnimate
 from basic.general_game_logic.base_objects.GameCombatObject import GameCombatObject
 from basic.general_game_logic.game_visualization.GameVisualizer import GameVisualizer
 from basic.general_game_logic.scene_folder.Scene import Scene
+from basic.general_settings import FPS
 from scenes.scene2.general.scene_settings import PLAYER_ANIMATION
 
 
@@ -19,8 +20,8 @@ class Player(GameCombatObject, GameAnimatedObject):
         self.move_direction = self.DOWN
 
         # Moving speed
-        self.move_step = 0.02
-        self.run_step = 0.05
+        self.move_step = 1.2 / FPS
+        self.run_step = 3 / FPS
 
     def process_running(self) -> bool:
         is_running = False

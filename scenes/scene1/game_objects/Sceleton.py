@@ -6,6 +6,7 @@ from basic.general_game_logic.base_objects.GameObject import GameObject
 from basic.general_game_logic.collision_system.rectangle_collision.CollisionRect import CollisionRect
 from basic.general_game_logic.game_visualization.GameVisualizer import GameVisualizer
 from basic.general_game_logic.scene_folder.Scene import Scene
+from basic.general_settings import FPS
 from scenes.scene1.general.scene_settings import SCELETON_ANIMATION
 from scenes.scene1.map.layers_generator.get_scheme_coordinates import get_scheme_coordinates
 from scenes.scene1.map.layers_generator.maze.maze_solver import bfs
@@ -22,9 +23,9 @@ class Sceleton(GameCombatObject, GameAnimatedObject):
         self.vertical_reverse = False
         self.enable_updating = True
 
-        # Moving
-        self.move_step = 0.02
-        self.run_step = 0.05
+        # Moving speed
+        self.move_step = 1.2 / FPS
+        self.run_step = 3 / FPS
 
         # Combat Parameters
         self.set_damage_parameters(CollisionRect(0, 0, 0.7, 0.7), 34)

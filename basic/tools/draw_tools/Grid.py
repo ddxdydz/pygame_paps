@@ -29,7 +29,7 @@ class Grid:
     @staticmethod
     def draw_vertical_screen_line(screen: pygame.Surface, camera: Camera, one_tick_to_px: int, main_x: float, color):
         _, camera_y = camera.get_coordinates()
-        _, camera_height = camera.get_obj_size()
+        _, camera_height = camera.get_size()
         pygame.draw.line(
             screen, color,
             DrawConverting.main_to_draw_coordinates(
@@ -42,7 +42,7 @@ class Grid:
     @staticmethod
     def draw_horizontal_screen_line(screen: pygame.Surface, camera: Camera, one_tick_to_px: int, main_y: float, color):
         camera_x, _ = camera.get_coordinates()
-        camera_width, _ = camera.get_obj_size()
+        camera_width, _ = camera.get_size()
         pygame.draw.line(
             screen, color,
             DrawConverting.main_to_draw_coordinates(
@@ -61,11 +61,11 @@ class Grid:
     def draw_grid(screen: pygame.Surface, camera: Camera, one_tick_to_px: int, grid_step: int,
                   main_axis_color=AXIS_COLOR, grid_color=GRID_COLOR, text_color=TEXT_COLOR):
         camera_x, camera_y = camera.get_coordinates()
-        camera_width, camera_height = camera.get_obj_size()
+        camera_width, camera_height = camera.get_size()
         start_x = int(camera_x - camera_x % grid_step)
         end_y = int(camera_y - camera_y % grid_step)
-        end_x = int(start_x + camera.get_obj_size()[0] + 1)
-        start_y = int(end_y - camera.get_obj_size()[1])
+        end_x = int(start_x + camera.get_size()[0] + 1)
+        start_y = int(end_y - camera.get_size()[1])
 
         # отображение текста сильно влияет на произвадительность
         # horizontal_text_x = 0

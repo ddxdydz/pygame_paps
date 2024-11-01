@@ -1,8 +1,8 @@
 MAP_SIZE_IN_PX = 2500, 2500
 OBJECTS_VISUALISATION = {
-    "map_background": {"size": (20, 20), "paths": {"base": ["data", "scene2", "imgs", "map", "game_map.png"]}},
+    "map_background": {"size": (20, 20), "paths": {"base": ["data", "scene2", "imgs", "map", "game_map.jpg"]}},
     "player": {
-        "size": (1, 1), "paths": {
+        "size": (1, 1), "convert_alpha": True, "paths": {
             "down": ["data", "scene2", "imgs", "player", "down.png"],
             "up": ["data", "scene2", "imgs", "player", "up.png"],
             "left": ["data", "scene2", "imgs", "player", "left.png"],

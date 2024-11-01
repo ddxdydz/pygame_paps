@@ -13,7 +13,9 @@ class Map:
 
     def draw(self, game_visualizer: GameVisualizer):
         game_visualizer.refresh_screen(refresh_color="#5E7B80")
-        game_visualizer.draw_image("map_background", "base", (0, self.height - 1))
+        game_visualizer.draw_image_by_cameras_area("map_background", "base", (0, self.height - 1))
+        # img = game_visualizer.get_image("map_background", "base")
+        # game_visualizer.get_screen().blit(img, (100, 100), (800, 800, 4000, 400))
 
     def draw_collisions(self, game_visualizer: GameVisualizer):
         # for wall in self.walls:

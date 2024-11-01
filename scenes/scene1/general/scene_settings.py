@@ -13,8 +13,8 @@ SCENE_AUDIO_PATHS = {
     "notification": ["data", "audio", "sound", "notification.wav"]
 }
 GAME_GUI_IMAGES = {
-    "health_bar": {"paths": {"base": ["data", "imgs", "game_imgs", "other", "health_bar.png"]}},
-    "stamina_bar": {"paths": {"base": ["data", "imgs", "game_imgs", "other", "stamina_bar.png"]}}
+    "health_bar": {"convert_alpha": True, "paths": {"base": ["data", "imgs", "game_imgs", "other", "health_bar.png"]}},
+    "stamina_bar": {"convert_alpha": True, "paths": {"base": ["data", "imgs", "game_imgs", "other", "stamina_bar.png"]}}
 }
 OBJECTS_VISUALISATION = {
     "floor_basic": {"size": (1, 1), "paths": {"base": ["data", "imgs", "game_imgs", "map", "floor_basic.png"]}},
@@ -30,6 +30,7 @@ OBJECTS_VISUALISATION = {
     "window": {"size": (2, 8), "paths": {"base": ["data", "imgs", "game_imgs", "map", "window.png"]}},
     "hero": {
         "size": (1, 1),
+        "convert_alpha": True,
         "paths": {
             "base": ["data", "imgs", "game_imgs", "hero", "attack", "1.png"],
             "attack1": ["data", "imgs", "game_imgs", "hero", "attack", "1.png"],
@@ -64,6 +65,7 @@ OBJECTS_VISUALISATION = {
     },
     "key": {
         "size": (0.7, 0.7),
+        "convert_alpha": True,
         "paths": {
             "base": ["data", "imgs", "game_imgs", "map_objects", "key", "key1.png"],
             "1": ["data", "imgs", "game_imgs", "map_objects", "key", "key1.png"],
@@ -73,6 +75,7 @@ OBJECTS_VISUALISATION = {
     },
     "chess": {
         "size": (0.7, 0.7),
+        "convert_alpha": True,
         "paths": {
             "base": ["data", "imgs", "game_imgs", "map_objects", "chess", "chess1.png"],
             "1": ["data", "imgs", "game_imgs", "map_objects", "chess", "chess1.png"],
@@ -83,6 +86,7 @@ OBJECTS_VISUALISATION = {
     },
     "vase": {
         "size": (0.7, 0.7),
+        "convert_alpha": True,
         "paths": {
             "base": ["data", "imgs", "game_imgs", "map_objects", "vase", "vase1.png"],
             "1": ["data", "imgs", "game_imgs", "map_objects", "vase", "vase1.png"],
@@ -93,6 +97,7 @@ OBJECTS_VISUALISATION = {
     },
     "money": {
         "size": (0.7, 0.7),
+        "convert_alpha": True,
         "paths": {
             "base": ["data", "imgs", "game_imgs", "map_objects", "money", "money1.png"],
             "1": ["data", "imgs", "game_imgs", "map_objects", "money", "money1.png"],
@@ -103,6 +108,7 @@ OBJECTS_VISUALISATION = {
     },
     "sceleton": {
         "size": (0.7, 0.7),
+        "convert_alpha": True,
         "paths": {
             "attack1": ["data", "imgs", "game_imgs", "skeleton", "attack", "1.png"],
             "attack2": ["data", "imgs", "game_imgs", "skeleton", "attack", "2.png"],

@@ -12,7 +12,7 @@ AUDIO_PATHS = {
 }
 IMAGE_PATHS = {
     "icon": ["data", "imgs", "icon", "icon.png"],
-    "menu_background": ["data", "imgs", "menu_imgs", "menu_background.png"]
+    "menu_background": ["data", "imgs", "menu_imgs", "menu_background.jpg"]
 }
 OTHER_PATHS = {
 }

@@ -13,12 +13,19 @@ class ImageLibrary:
             self.loaded_images[code]["paths"] = dict()
             self.loaded_images[code]["imgs"] = dict()
             self.loaded_images[code]["size"] = width, height
+
+            convert_alpha = False
+            if "convert_alpha" in images_library[code].keys():
+                if images_library[code]["convert_alpha"]:
+                    convert_alpha = True
+            self.loaded_images[code]["convert_alpha"] = convert_alpha
+
             for img_type in images_library[code]["paths"].keys():
-                path = images_library[code]["paths"][img_type]
-                img = load_image(path, (width * tick_size, height * tick_size))
-                self.loaded_images[code]["paths"][img_type] = path
-                self.loaded_images[code]["imgs"][img_type] = img
-                self.loaded_images[code]["tick_size"] = tick_size
+                    path = images_library[code]["paths"][img_type]
+                    img = load_image(path, (width * tick_size, height * tick_size), convert_alpha)
+                    self.loaded_images[code]["paths"][img_type] = path
+                    self.loaded_images[code]["imgs"][img_type] = img
+                    self.loaded_images[code]["tick_size"] = tick_size
 
     def clear_loaded_images(self):
         self.loaded_images.clear()

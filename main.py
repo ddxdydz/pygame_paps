@@ -62,7 +62,7 @@ def main():
 
 if __name__ == "__main__":
     pygame.init()
+    screen = pygame.display.set_mode(DEFAULT_WINDOW_SIZE, pygame.RESIZABLE)
     pygame.display.set_caption("TestGame")
     pygame.display.set_icon(load_image(IMAGE_PATHS["icon"]))
-    screen = pygame.display.set_mode(DEFAULT_WINDOW_SIZE, pygame.RESIZABLE)
     main()

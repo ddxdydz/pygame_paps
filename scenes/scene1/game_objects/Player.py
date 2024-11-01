@@ -6,6 +6,7 @@ from basic.general_game_logic.collision_system.rectangle_collision.CollisionRect
 from basic.general_game_logic.dynamic.combat_system.Stamina import Stamina
 from basic.general_game_logic.game_visualization.GameVisualizer import GameVisualizer
 from basic.general_game_logic.scene_folder.Scene import Scene
+from basic.general_settings import FPS
 from scenes.scene1.general.scene_settings import PLAYER_ANIMATION
 
 
@@ -21,8 +22,8 @@ class Player(GameCombatObject, GameAnimatedObject):
         self.vertical_reverse = False
 
         # Moving speed
-        self.move_step = 0.02
-        self.run_step = 0.05
+        self.move_step = 1.2 / FPS
+        self.run_step = 3 / FPS
 
         # Stamina
         self.stamina_keeper = Stamina()

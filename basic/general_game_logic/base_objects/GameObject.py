@@ -16,11 +16,23 @@ class GameObject:
     def set_size(self, size):
         self.size = self.width, self.height = size
 
-    def get_obj_size(self):
+    def get_size(self):
         return self.size
+
+    def get_width(self):
+        return self.size[0]
+
+    def get_height(self):
+        return self.size[1]
 
     def get_coordinates(self):
         return self.x0, self.y0
+
+    def get_x(self):
+        return self.x0
+
+    def get_y(self):
+        return self.y0
 
     def set_coordinates(self, new_coordinates: tuple):
         self.x0, self.y0 = new_coordinates
@@ -41,7 +53,7 @@ class GameObject:
 
     def get_no_contact_distance(self, obj) -> float:
         if isinstance(obj, GameObject):
-            return (hypot(*self.size) + hypot(*obj.get_obj_size())) * 0.6
+            return (hypot(*self.size) + hypot(*obj.get_size())) * 0.6
         return inf
 
     def update(self, *args, **kwargs):

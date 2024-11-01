@@ -61,12 +61,38 @@ class GameVisualizer(GameGraphicScaler):
         if not self.check_max_draw_distance(x, y, obj_width, obj_height):
             return
 
-        draw_coordinates = DrawConverting.main_to_draw_coordinates(
-            (x, y), self.camera.get_coordinates(), self.get_current_tick_size())
         img = self.get_image(code, img_type)
         if vertical_reverse:
             img = pygame.transform.flip(img, True, False)
-        self.screen.blit(img, draw_coordinates)
+
+        self.screen.blit(img, self.to_draw_coordinates(x, y))
+
+    def draw_image_by_cameras_area(self, code, img_type, coordinates):
+        x, y = coordinates
+        # img_width, img_height = tuple(int(self.get_current_tick_size() * value)
+        # for value in self.get_image_size(code))
+
+        area = self.camera.get_x() - x, -(self.camera.get_y() - y), *self.camera.get_size()
+        area = tuple(int(self.get_current_tick_size() * value) for value in area)
+        # area_x0, area_y0, area_width, area_height = area
+        # area_x1, area_y1 = area_x0 + area_width, area_y0 + area_height
+        #
+        # if area_x0 < 0: area_x0 = 0
+        # if area_y0 < 0: area_y0 = 0
+        # if area_x1 > img_width: area_x1 = img_width
+        # if area_y1 > img_height: area_y1 = img_height
+        #
+        # count = 0
+        # for cx in range(area_x0, area_x1 + 1):
+        #     for cy in range(area_y0, area_y1 + 1):
+        #         count += 1
+        # print(count, (area_x0, area_x1), (area_y0, area_y1), area)
+
+        self.screen.blit(
+            self.get_image(code, img_type),
+            (0, 0),
+            area=area
+        )
 
     def refresh_screen(self, refresh_color="black"):
         self.screen.fill(refresh_color)

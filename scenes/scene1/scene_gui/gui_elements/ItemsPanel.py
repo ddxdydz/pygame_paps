@@ -31,7 +31,7 @@ class ItemsPanel:
             if img_type in images_library[code]["paths"].keys():
                 path = images_library[code]["paths"][img_type]
                 self.loaded_items_icons[code] = dict()
-                self.loaded_items_icons[code]["image"] = load_image(path, self.get_icon_size())
+                self.loaded_items_icons[code]["image"] = load_image(path, self.get_icon_size(), True)
 
     def get_item_icon(self, code):
         if code in self.loaded_items_icons.keys():

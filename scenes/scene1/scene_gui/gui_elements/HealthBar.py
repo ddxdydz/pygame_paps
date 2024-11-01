@@ -23,7 +23,7 @@ class HealthBar:
             self.set_image(image_path)
 
     def set_image(self, path):
-        self.image = load_image(path, self.surface_size)
+        self.image = load_image(path, self.surface_size, True)
 
     def update_health_bar(self, current_value, max_value):
         self.bar.update_filling_level(current_value / max_value)

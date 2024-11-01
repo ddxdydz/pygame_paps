@@ -3,8 +3,8 @@
 added_files = [
     ('data/imgs/icon/icon.ico','data/imgs/icon'),
     ('data/imgs/icon/icon.png','data/imgs/icon'),
-    ('data/imgs/menu_imgs/menu_background.png', 'data/imgs/menu_imgs'),
-    ('data/scene2/imgs/map/game_map.png', 'data/scene2/imgs/map'),
+    ('data/imgs/menu_imgs/menu_background.jpg', 'data/imgs/menu_imgs'),
+    ('data/scene2/imgs/map/game_map.jpg', 'data/scene2/imgs/map'),
     ('data/scene2/imgs/player/*.png', 'data/scene2/imgs/player')
 ]
 a = Analysis(
