@@ -4,12 +4,25 @@ import sys
 import pygame
 
 
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
 def join_path(path: list[str, ...]):
     return os.path.join(*path)
 
 
+def get_full_path(path: list[str, ...]):
+    return resource_path(join_path(path))
+
+
 def load_image(path: list[str, ...], size=None, colorkey=None):
-    fullname = os.path.join(*path)
+    fullname = get_full_path(path)
 
     # если файл не существует, то выходим
     if not os.path.isfile(fullname):

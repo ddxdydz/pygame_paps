@@ -8,7 +8,9 @@ SCENE_AUDIO_PATHS = {
     "sceleton_lose": ["data", "audio", "sound", "sceleton_lose.wav"],
     "sceleton_hit": ["data", "audio", "sound", "sceleton_hit.wav"],
     "hero_hit": ["data", "audio", "sound", "hero_hit.wav"],
-    "sceleton_alert": ["data", "audio", "sound", "sceleton_alert.wav"]
+    "sceleton_alert": ["data", "audio", "sound", "sceleton_alert.wav"],
+    "game": ["data", "audio", "music", "game.mp3"],
+    "notification": ["data", "audio", "sound", "notification.wav"]
 }
 GAME_GUI_IMAGES = {
     "health_bar": {"paths": {"base": ["data", "imgs", "game_imgs", "other", "health_bar.png"]}},

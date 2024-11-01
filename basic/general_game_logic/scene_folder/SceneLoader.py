@@ -21,6 +21,8 @@ class SceneLoader:
 
         clock = pygame.time.Clock()
 
+        self.audio_manager.load_music("game")
+
         running = True
         while running:
             events = pygame.event.get().copy()

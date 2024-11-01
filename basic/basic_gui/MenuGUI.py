@@ -40,7 +40,9 @@ class MenuGUI:
         self.main_menu_messanger.background_screen_color = pygame.Color(20, 20, 20)
         self.main_menu_messanger.default_visible = 255
 
-    def show_rules(self, screen, rules):
+    def show_rules(self, screen, rules, rules_text_font_size_coefficient=None):
+        if rules_text_font_size_coefficient is not None:
+            self.main_menu_messanger.main_text_font_size_coefficient = rules_text_font_size_coefficient
         self.main_menu_messanger.show_message(screen, rules)
 
     def recalculate_buttons(self, background_draw_coordinates, background_draw_size):

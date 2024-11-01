@@ -1,7 +1,7 @@
 import pygame
 
 from basic.audio.AudioManagerGUI import AudioManagerGUI
-from basic.tools.loading.loading_files import join_path
+from basic.tools.loading.loading_files import get_full_path
 
 
 class AudioManager(AudioManagerGUI):
@@ -15,7 +15,7 @@ class AudioManager(AudioManagerGUI):
 
     def load_audio_data(self, audio_library: dict):
         for audio_name in audio_library.keys():
-            self.loaded_audio[audio_name] = join_path(audio_library[audio_name])
+            self.loaded_audio[audio_name] = get_full_path(audio_library[audio_name])
 
     def is_loaded_name(self, name):
         if name in self.loaded_audio.keys():

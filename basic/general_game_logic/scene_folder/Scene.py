@@ -6,6 +6,7 @@ from basic.general_game_logic.scene_folder.GuiManagerScene import GuiManagerScen
 
 class Scene:
     rules = "No rules"
+    rules_text_font_size_coefficient = 1 / 26
 
     def __init__(self, screen, audio_manager: AudioManager = AudioManager()):
         self.audio_manager = audio_manager
@@ -18,9 +19,6 @@ class Scene:
         self.messanger.end_key_code = 13  # enter
 
         self.is_over = False
-
-    def get_rules(self):
-        return self.rules
 
     def get_screen(self):
         return self.game_visualizer.get_screen()

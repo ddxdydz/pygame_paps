@@ -9,8 +9,6 @@ MIN_PROCESSING_MOVE_DELTA = 0.01  # ticks
 
 AUDIO_PATHS = {
     "menu": ["data", "audio", "music", "menu.mp3"],
-    "game": ["data", "audio", "music", "game.mp3"],
-    "notification": ["data", "audio", "sound", "notification.wav"]
 }
 IMAGE_PATHS = {
     "icon": ["data", "imgs", "icon", "icon.png"],
@@ -19,18 +17,24 @@ IMAGE_PATHS = {
 OTHER_PATHS = {
 }
 
+GENERAL_RULES = """
+    Общее управление:
+Esc: пауза с возможностью выхода в меню
+Alt + Enter: переключение на полный экран
+Tab: показать идикатор FPS off/on
 """
-Hot keys:
-    alt + enter     fullscreen toggle
-    <-  ->          music valume
-    space           music pause
-Scene debugger hot keys:
-    +               increase tick size
-    -               decrease tick size
-    o	enable free camera
-    v	show gui
-    g   show grid
-    r   auto size
-    p	show debug info
-    m	send message with size
+MUSIC_RULES = """
+    Управление музыкой:
+Space: пауза музыки
+стрелки влево вправо: изменение громкости
+"""
+SCENE_DEBUG_RULES = """
+    Общая отладка сцены:
++/-: increase/decrease tick size
+O: режим свободной камеры off/on
+V: show gui off/on
+G: show grid off/on
+R: screen autosize
+P: показ визуальной информации для отладки off/on
+M: отправить сообщение с параметрамы отображения
 """

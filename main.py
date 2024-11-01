@@ -9,17 +9,18 @@ from basic.tools.loading.loading_files import load_image
 from basic.general_game_logic.scene_folder.SceneLoader import SceneLoader
 from basic.audio.AudioManager import AudioManager
 from scenes.scene1.Scene1 import Scene1
-from scenes.scene2.Scene2 import Scene2
+from scenes.scene2.Scene2draw import Scene2draw as Scene2
+from scenes.scene3.Scene3 import Scene3
 
 
 def main():
     menu_gui = MenuGUI()
     audio_manager = AudioManager()
-    audio_manager.load_audio_data(AUDIO_PATHS)
+    # audio_manager.load_audio_data(AUDIO_PATHS)
     audio_manager.load_music("menu")
 
     scene_loader = SceneLoader(audio_manager)
-    scene = Scene2
+    scene = Scene3
 
     clock = pygame.time.Clock()
 
@@ -31,12 +32,11 @@ def main():
                 sys.exit()
             elif event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == menu_gui.buttons["start"]:
-                    audio_manager.load_music("game")
                     scene_loader.fps_bar.switch_show()
                     scene_loader.load(scene(screen, audio_manager))
                     audio_manager.load_music("menu")
                 elif event.ui_element == menu_gui.buttons["rules"]:
-                    menu_gui.show_rules(screen, scene.rules)
+                    menu_gui.show_rules(screen, scene.rules, scene.rules_text_font_size_coefficient)
                 elif event.ui_element == menu_gui.buttons["quit"]:
                     running = False
             elif event.type == pygame.KEYDOWN:

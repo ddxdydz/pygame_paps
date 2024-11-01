@@ -21,14 +21,19 @@ class GameVisualizer(GameGraphicScaler):
     def get_camera(self) -> Camera:
         return self.camera
 
-    def to_draw_coordinates(self, x: float, y: float) -> tuple[float, float]:
+    def to_main_coordinates(self, x: int, y: int) -> tuple[float, float]:
+        return DrawConverting.draw_to_main_coordinates(
+            (x, y), self.camera.get_coordinates(), self.get_current_tick_size()
+        )
+
+    def to_draw_coordinates(self, x: float, y: float) -> tuple[int, int]:
         return DrawConverting.main_to_draw_coordinates(
             (x, y), self.camera.get_coordinates(), self.get_current_tick_size()
         )
 
     def check_max_draw_distance(self, obj_x, obj_y, obj_width, obj_height) -> bool:
         checking_obj = GameObject((obj_x, obj_y), (obj_width, obj_height))
-        max_draw_distance = self.camera.get_no_contact_distance(checking_obj)
+        max_draw_distance = self.camera.get_no_contact_distance(checking_obj)  # // 2
         if self.camera.get_distance_between_centres(checking_obj) < max_draw_distance:
             return True
         return False

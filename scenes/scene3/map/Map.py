@@ -1,6 +1,6 @@
 from basic.general_game_logic.collision_system.lines_collision.CollisionLines import CollisionLines
 from basic.general_game_logic.game_visualization.GameVisualizer import GameVisualizer
-from scenes.scene2.general.scene_settings import OBJECTS_VISUALISATION, LINE_BORDERS, MAP_SIZE_IN_PX
+from scenes.scene3.general.scene_settings import OBJECTS_VISUALISATION, LINE_BORDERS, MAP_SIZE_IN_PX
 from basic.tools.loading.load_borders import load_line_border
 
 

@@ -17,7 +17,7 @@ class FullScreenMessanger:
         self.default_visible = 200
 
         self.main_text_color = (235, 235, 235, 255)
-        self.main_text_font_size_coefficient = 1 / 22
+        self.main_text_font_size_coefficient = 1 / 20
         self.showing_main_text = ""
 
         self.annotation_color = (200, 200, 200, 180)
@@ -40,6 +40,25 @@ class FullScreenMessanger:
         text = annotation_font.render(self.annotation_text, True, self.annotation_color)
         return text
 
+    def get_text_surface(self, screen: pygame.Surface) -> pygame.Surface:
+        main_text = self.get_main_text(screen)
+        annotation_text = self.get_annotation_text(screen)
+
+        width = max(main_text.get_width(), annotation_text.get_width())
+        height = main_text.get_height() + 2 * annotation_text.get_height()
+
+        text_surface = pygame.Surface((width, height)).convert_alpha()
+        text_surface.fill("black")
+        text_surface.set_colorkey("black")
+
+        main_text_x, _ = get_drawing_center_coordinates(text_surface, main_text)
+        annotation_text_x, _ = get_drawing_center_coordinates(text_surface, annotation_text)
+        annotation_text_y = main_text.get_height() + annotation_text.get_height()
+
+        text_surface.blit(main_text, (main_text_x, 0))
+        text_surface.blit(annotation_text, (annotation_text_x, annotation_text_y))
+        return text_surface
+
     def get_message_background(self, screen: pygame.Surface) -> pygame.Surface:
         background = pygame.Surface(screen.get_size()).convert_alpha()
         background.fill(self.background_screen_color)
@@ -47,16 +66,9 @@ class FullScreenMessanger:
         return background
 
     def draw_message(self, screen: pygame.Surface, default_background: pygame.Surface):
-        main_text = self.get_main_text(screen)
-        annotation_text = self.get_annotation_text(screen)
-
-        main_text_x, main_text_y = get_drawing_center_coordinates(screen, main_text)
-        annotation_text_x, _ = get_drawing_center_coordinates(screen, annotation_text)
-        annotation_text_y = main_text_y + main_text.get_height() + 2 * annotation_text.get_height()
-
+        text_surface = self.get_text_surface(screen)
         default_background.blit(self.get_message_background(screen), (0, 0))
-        default_background.blit(main_text, (main_text_x, main_text_y))
-        default_background.blit(annotation_text, (annotation_text_x, annotation_text_y))
+        default_background.blit(text_surface, get_drawing_center_coordinates(default_background, text_surface))
         screen.blit(default_background)
 
     def enable_messanger_loop(self, screen: pygame.Surface):

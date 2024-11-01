@@ -67,16 +67,17 @@ class Grid:
         end_x = int(start_x + camera.get_obj_size()[0] + 1)
         start_y = int(end_y - camera.get_obj_size()[1])
 
-        horizontal_text_x = 0
-        if 0 < camera_x:
-            horizontal_text_x = camera_x
-        elif camera_x + camera_width < 0:
-            horizontal_text_x = camera_x + camera_width - 20 / one_tick_to_px
-        vertical_text_y = 0
-        if 0 < camera_y - camera_height:
-            vertical_text_y = camera_y - camera_height + 20 / one_tick_to_px
-        elif camera_y < 0:
-            vertical_text_y = camera_y
+        # отображение текста сильно влияет на произвадительность
+        # horizontal_text_x = 0
+        # if 0 < camera_x:
+        #     horizontal_text_x = camera_x
+        # elif camera_x + camera_width < 0:
+        #     horizontal_text_x = camera_x + camera_width - 20 / one_tick_to_px
+        # vertical_text_y = 0
+        # if 0 < camera_y - camera_height:
+        #     vertical_text_y = camera_y - camera_height + 20 / one_tick_to_px
+        # elif camera_y < 0:
+        #     vertical_text_y = camera_y
 
         # Draw vertical grid lines
         count_x = 0
@@ -85,7 +86,7 @@ class Grid:
                 Grid.draw_vertical_screen_line(screen, camera, one_tick_to_px, 0, main_axis_color)
                 continue
             Grid.draw_vertical_screen_line(screen, camera, one_tick_to_px, x, grid_color)
-            Grid.draw_coordinates(screen, camera, one_tick_to_px, (x, vertical_text_y), text_color, draw_y=False)
+            # Grid.draw_coordinates(screen, camera, one_tick_to_px, (x, vertical_text_y), text_color, draw_y=False)
             count_x += 1
 
         # Draw horizontal grid lines
@@ -95,7 +96,7 @@ class Grid:
                 Grid.draw_horizontal_screen_line(screen, camera, one_tick_to_px, 0, main_axis_color)
                 continue
             Grid.draw_horizontal_screen_line(screen, camera, one_tick_to_px, y, grid_color)
-            Grid.draw_coordinates(screen, camera, one_tick_to_px, (horizontal_text_x, y), text_color, draw_x=False)
+            # Grid.draw_coordinates(screen, camera, one_tick_to_px, (horizontal_text_x, y), text_color, draw_x=False)
             count_y += 1
 
         # Draw axis

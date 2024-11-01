@@ -32,13 +32,13 @@ class CollisionLineChecker:
         return inf, inf
 
     @staticmethod
-    def check_collision_between_lines(line1: CollisionLine, line2: CollisionLine, seg=0.01) -> bool:
+    def check_collision_between_lines(line1: CollisionLine, line2: CollisionLine, gap=0.001) -> bool:
         crossing_x, crossing_y = CollisionLineChecker.get_crossing_point(line1, line2)
         if crossing_x != inf:
-            if line1.x_border[0] - seg < crossing_x < line1.x_border[1] + seg and \
-                    line1.y_border[0] - seg < crossing_y < line1.y_border[1] + seg and \
-                    line2.x_border[0] - seg < crossing_x < line2.x_border[1] + seg and \
-                    line2.y_border[0] - seg < crossing_y < line2.y_border[1] + seg:
+            if line1.x_border[0] - gap < crossing_x < line1.x_border[1] + gap and \
+                    line1.y_border[0] - gap < crossing_y < line1.y_border[1] + gap and \
+                    line2.x_border[0] - gap < crossing_x < line2.x_border[1] + gap and \
+                    line2.y_border[0] - gap < crossing_y < line2.y_border[1] + gap:
                 return True
         return False
 
@@ -47,9 +47,22 @@ class CollisionLineChecker:
             line: CollisionLine,
             collision_rect_coordinates: tuple[tuple[float, float], ...]) -> bool:
         point1, point2, point3, point4 = collision_rect_coordinates
-        rect_line1, rect_line2 = CollisionLine(point1, point3), CollisionLine(point2, point4)
-        if CollisionLineChecker.check_collision_between_lines(line, rect_line1):
+        if CollisionLineChecker.check_collision_between_lines(line, CollisionLine(point1, point2)):
             return True
-        if CollisionLineChecker.check_collision_between_lines(line, rect_line2):
+        if CollisionLineChecker.check_collision_between_lines(line, CollisionLine(point2, point3)):
+            return True
+        if CollisionLineChecker.check_collision_between_lines(line, CollisionLine(point3, point4)):
+            return True
+        if CollisionLineChecker.check_collision_between_lines(line, CollisionLine(point4, point1)):
             return True
         return False
+
+
+if __name__ == "__main__":
+    test_line1 = CollisionLine((0, -1), (0, 2))
+    test_line2 = CollisionLine((-1, 1), (1, 1))
+    cr_x, cr_y = CollisionLineChecker.get_crossing_point(test_line1, test_line2)
+    print(CollisionLineChecker.get_crossing_point(test_line1, test_line2))
+    print(CollisionLineChecker.check_collision_between_lines(test_line1, test_line2, gap=0.001))
+    print(test_line1.x_border, test_line1.y_border)
+    print(test_line1.x_border[0] < cr_x < test_line1.x_border[1])
