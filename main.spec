@@ -4,8 +4,11 @@ added_files = [
     ('data/imgs/icon/icon.ico','data/imgs/icon'),
     ('data/imgs/icon/icon.png','data/imgs/icon'),
     ('data/imgs/menu_imgs/menu_background.jpg', 'data/imgs/menu_imgs'),
+    ('data/imgs/game_imgs/other/*.png', 'data/imgs/game_imgs/other'),
     ('data/scene2/imgs/map/game_map.jpg', 'data/scene2/imgs/map'),
-    ('data/scene2/imgs/player/*.png', 'data/scene2/imgs/player')
+    ('data/scene2/imgs/player/*.png', 'data/scene2/imgs/player'),
+    ('data/scene2/imgs/enemy/*.png', 'data/scene2/imgs/enemy'),
+    ('data/audio/sound/*.wav', 'data/audio/sound')
 ]
 a = Analysis(
     ['main.py'],

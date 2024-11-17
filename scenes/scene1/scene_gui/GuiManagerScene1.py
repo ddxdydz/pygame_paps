@@ -14,8 +14,8 @@ class GuiManagerScene1(GuiManagerScene):
         self.timer = TimerBar()
         self.health_bar = HealthBar(GAME_GUI_IMAGES["health_bar"]["paths"]["base"])
         self.stamina_bar = StaminaBar(GAME_GUI_IMAGES["stamina_bar"]["paths"]["base"])
-        self.items_panel = ItemsPanel()
-        self.items_panel.load_items_icons(OBJECTS_VISUALISATION)
+        # self.items_panel = ItemsPanel()
+        # self.items_panel.load_items_icons(OBJECTS_VISUALISATION)
 
     def show_message(self, message: str):
         self.messanger.show_message(message)
@@ -31,5 +31,5 @@ class GuiManagerScene1(GuiManagerScene):
         if self.show_gui:
             self.health_bar.draw_health_bar(self.get_screen())
             self.stamina_bar.draw_stamina_bar(self.get_screen())
-            self.items_panel.draw_items_list_panel(self.get_screen())
+            # self.items_panel.draw_items_list_panel(self.get_screen())
             self.messanger.draw(self.get_screen(), 20, 30)

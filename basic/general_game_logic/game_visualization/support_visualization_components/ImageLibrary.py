@@ -32,22 +32,22 @@ class ImageLibrary:
 
     def reload_images(self, tick_size: int):
         if tick_size < 0:
-            raise Exception(f"ImageLoader Error: tick_size = {tick_size} < 0")
+            raise Exception(f"ImageLibrary Error: tick_size = {tick_size} < 0")
         loaded_images_copied = self.loaded_images.copy()
         self.clear_loaded_images()
         self.load_images(loaded_images_copied, tick_size)
-        print(f"ImageLoader Warning: Game images was reloaded! tick_size: {tick_size}")
+        print(f"ImageLibrary Warning: Game images was reloaded! tick_size: {tick_size}")
 
     def check_image_code(self, code):
         if code in self.loaded_images.keys():
             return True
-        print(f"ImageLoader Warning: Image code is not founded. Code: '{code}'")
+        print(f"ImageLibrary Warning: Image code is not founded. Code: '{code}'")
         return False
 
     def check_img_type(self, code, img_type):
         if img_type in self.loaded_images[code]["imgs"].keys():
             return True
-        print(f"ImageLoader Warning: Image img_type is not founded. " +
+        print(f"ImageLibrary Warning: img_type is not founded. " +
               f"Code: '{code}', img_type: '{img_type}'")
         return False
 
