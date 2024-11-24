@@ -13,15 +13,15 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
-def join_path(path: list[str, ...]):
+def join_path(path: list[str]):
     return os.path.join(*path)
 
 
-def get_full_path(path: list[str, ...]):
+def get_full_path(path: list[str]):
     return resource_path(join_path(path))
 
 
-def load_image(path: list[str, ...], size=None, convert_alpha=False, colorkey=None):
+def load_image(path: list[str], size=None, convert_alpha=False, colorkey=None):
     fullname = get_full_path(path)
 
     # если файл не существует, то выходим
